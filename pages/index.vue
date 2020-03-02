@@ -23,10 +23,16 @@ export default {
   },
   methods: {
     async getBanners() {
-      const res = await this.$axios({ url: "/scenics/banners" });
-      console.log(res);
-      const { data } = res.data;
-      this.banners = data;
+      try {
+        //尝试运行
+        const res = await this.$axios({ url: "/scenics/banners" });
+        console.log(res);
+        const { data } = res.data;
+        this.banners = data;
+      } catch (error) {
+        //捕捉错误
+        console.log(error);
+      }
     }
   }
 };
