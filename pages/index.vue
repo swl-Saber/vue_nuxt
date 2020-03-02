@@ -83,13 +83,17 @@ export default {
     handleOption(index) {
       this.currentOption = index;
       // 如果切换到机票，直接跳转机票页面
-      const item=this.options[this.currentOption];
-      if(item.name=="机票"){
-          this.$router.push(item.pageUrl)
+      const item = this.options[this.currentOption];
+      if (item.name == "机票") {
+        this.$router.push(item.pageUrl);
       }
     },
+
     handleSearch() {
-      console.log("发送请求搜索");
+      //   console.log("发送请求搜索");
+      const item = this.options[this.currentOption];
+      //跳转时给对应的页面url加上搜索内容参数
+      this.$router.push(item.pageUrl + this.searchValue);
     }
   }
 };
