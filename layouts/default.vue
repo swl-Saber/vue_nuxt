@@ -4,22 +4,24 @@
     <Header></Header>
     <nuxt />
     <!-- 公共页脚 -->
-    页脚
+    <Footer></Footer>
   </div>
 </template>
 <script>
-import Header from '@/components/Header.vue'
+import Header from "@/components/Header.vue";
+import Footer from "@/components/Footer.vue";
 
 export default {
-  components:{
-    Header
+  components: {
+    Header,
+    Footer
   }
-}
+};
 </script>
 <style>
 html {
-  font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI',
-    Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-family: "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, "Helvetica Neue", Arial, sans-serif;
   font-size: 16px;
   word-spacing: 1px;
   -ms-text-size-adjust: 100%;
@@ -64,18 +66,21 @@ html {
   color: #fff;
   background-color: #35495e;
 }
-*{
-  margin:0; 
-  padding:0;
+* {
+  margin: 0;
+  padding: 0;
 }
-ul, li, ol{
-  list-style:none;
+ul,
+li,
+ol {
+  list-style: none;
 }
-a{
-  text-decoration:none;
-  color:inherit;
+a {
+  text-decoration: none;
+  color: inherit;
 }
-em,i{
+em,
+i {
   font-style: normal;
 }
 </style>
