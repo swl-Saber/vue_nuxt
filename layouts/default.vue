@@ -1,9 +1,21 @@
 <template>
   <div>
+    <!-- 公共头部 -->
+    <Header></Header>
     <nuxt />
+    <!-- 公共页脚 -->
+    页脚
   </div>
 </template>
+<script>
+import Header from '@/components/Header.vue'
 
+export default {
+  components:{
+    Header
+  }
+}
+</script>
 <style>
 html {
   font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI',
@@ -51,5 +63,19 @@ html {
 .button--grey:hover {
   color: #fff;
   background-color: #35495e;
+}
+*{
+  margin:0; 
+  padding:0;
+}
+ul, li, ol{
+  list-style:none;
+}
+a{
+  text-decoration:none;
+  color:inherit;
+}
+em,i{
+  font-style: normal;
 }
 </style>
