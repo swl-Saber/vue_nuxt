@@ -12,18 +12,23 @@
             @click="changeTab(index)"
           >{{item}}</span>
         </el-row>
+        <loginForm></loginForm>
       </div>
-    </el-row>
+    </el-row> 
   </div>
 </template>
 
 <script>
+import loginForm from "@/components/user/loginForm.vue";
 export default {
   data() {
     return {
       currentTab: 0,
       loginList: ["登录", "注册"]
     };
+  },
+  components:{
+      loginForm
   },
   methods: {
     changeTab(index) {
