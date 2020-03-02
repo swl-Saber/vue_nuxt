@@ -2,7 +2,6 @@
   <div>
     <!-- 公共头部 -->
     <Header></Header>
-    <Test></Test>
     <nuxt />
     <!-- 公共页脚 -->
     <Footer></Footer>
@@ -11,13 +10,12 @@
 <script>
 import Header from "@/components/Header.vue";
 import Footer from "@/components/Footer.vue";
-import Test from "@/pages/test.vue";
+// import Test from "@/pages/test.vue";
 
 export default {
   components: {
     Header,
     Footer,
-    Test
   }
 };
 </script>
