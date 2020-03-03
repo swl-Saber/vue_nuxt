@@ -28,46 +28,51 @@ export default {
           {
             required: true,
             message: "请输入用户名/手机",
-            trigger: 'blur'
+            trigger: "blur"
           }
         ],
-        password:[
+        password: [
           {
-            required:true,
-            message:"请输入密码",
-            trigger:'blur'
+            required: true,
+            message: "请输入密码",
+            trigger: "blur"
           }
         ]
       }
     };
   },
   methods: {
-    async handleLoginSubmit() {
-      try {
-        const res = await this.$axios({
-          url: "/accounts/login",
-          method: "post",
-          data: {
-            username: this.form.username,
-            password: this.form.password
+    handleLoginSubmit() {
+      //验证表单
+      this.$refs.form.validate(async isValue => {
+        if (isValue) {
+          try {
+            const res = await this.$axios({
+              url: "/accounts/login",
+              method: "post",
+              data: {
+                username: this.form.username,
+                password: this.form.password
+              }
+            });
+            console.log(res.data);
+            const { token, user } = res.data;
+            // console.log(data.token);
+            localStorage.setItem("token", JSON.stringify(token));
+            localStorage.setItem("user_id", JSON.stringify(user.id));
+            this.$message({
+              type: "success",
+              message: "登录成功"
+            });
+          } catch (error) {
+            console.log(error);
+            this.$message({
+              type: "error",
+              message: "登录失败"
+            });
           }
-        });
-        console.log(res.data);
-        const { token, user } = res.data;
-        // console.log(data.token);
-        localStorage.setItem("token", JSON.stringify(token));
-        localStorage.setItem("user_id", JSON.stringify(user.id));
-        this.$message({
-          type: "success",
-          message: "登录成功"
-        });
-      } catch (error) {
-        console.log(error);
-        this.$message({
-          type: "error",
-          message: "登录失败"
-        });
-      }
+        }
+      });
     }
   }
 };
