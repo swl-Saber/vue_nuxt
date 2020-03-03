@@ -44,9 +44,10 @@ export default {
   methods: {
     handleLoginSubmit() {
       //验证表单
-      this.$refs.form.validate(async isValue => {
+      this.$refs.form.validate(isValue => {
         if (isValue) {
-          try {
+          this.$store.dispatch("user/login",this.form).then(res=>{this.$router.push('/')})
+          /* try {
             const res = await this.$axios({
               url: "/accounts/login",
               method: "post",
@@ -73,7 +74,7 @@ export default {
               type: "error",
               message: "登录失败"
             });
-          }
+          } */
         }
       });
     }

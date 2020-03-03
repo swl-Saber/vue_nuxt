@@ -4,10 +4,10 @@
 // export const state={}
 export const state = () => ({
   userInfo: {
-    token: '',
+    token: "",
     user: {}
   }
-})
+});
 
 //创建mutation进行数据的修改
 export const mutations = {
@@ -20,10 +20,22 @@ export const mutations = {
     //第二是外面调用时传入的数据
     state.userInfo = data;
   }
-}
-
-export const actions={
-    login(store,data){
-        
-    }
-}
+};
+// 使用action处理异步操作
+export const actions = {
+  login(store, data) {
+    this.$axios({
+      url: "/accounts/login",
+      method: "post",
+      data
+    }).then(res => {
+      if (res.data.token) {
+        store.commit("setUserInfo", res.data);
+        this.$message({
+          type: "success",
+          message: "登录成功"
+        });
+      }
+    });
+  }
+};
