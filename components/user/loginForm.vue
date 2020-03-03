@@ -1,9 +1,9 @@
 <template>
   <el-form :model="form" :rules="rules" ref="form" class="form">
-    <el-form-item class="form-item">
+    <el-form-item class="form-item" prop="username">
       <el-input v-model="form.username" placeholder="用户名/手机号"></el-input>
     </el-form-item>
-    <el-form-item class="form-item">
+    <el-form-item class="form-item" prop="password">
       <el-input type="password" v-model="form.password" placeholder="密码"></el-input>
     </el-form-item>
     <p class="form-text">
@@ -23,12 +23,51 @@ export default {
         password: ""
       },
       //表单规则
-      rules: {}
+      rules: {
+        username: [
+          {
+            required: true,
+            message: "请输入用户名/手机",
+            trigger: 'blur'
+          }
+        ],
+        password:[
+          {
+            required:true,
+            message:"请输入密码",
+            trigger:'blur'
+          }
+        ]
+      }
     };
   },
   methods: {
-    handleLoginSubmit() {
-      console.log(this.form);
+    async handleLoginSubmit() {
+      try {
+        const res = await this.$axios({
+          url: "/accounts/login",
+          method: "post",
+          data: {
+            username: this.form.username,
+            password: this.form.password
+          }
+        });
+        console.log(res.data);
+        const { token, user } = res.data;
+        // console.log(data.token);
+        localStorage.setItem("token", JSON.stringify(token));
+        localStorage.setItem("user_id", JSON.stringify(user.id));
+        this.$message({
+          type: "success",
+          message: "登录成功"
+        });
+      } catch (error) {
+        console.log(error);
+        this.$message({
+          type: "error",
+          message: "登录失败"
+        });
+      }
     }
   }
 };
