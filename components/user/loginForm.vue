@@ -4,12 +4,18 @@
       <el-input v-model="form.username" placeholder="用户名/手机号"></el-input>
     </el-form-item>
     <el-form-item class="form-item" prop="password">
-      <el-input type="password" v-model="form.password" placeholder="密码"></el-input>
+      <el-input
+        type="password"
+        v-model="form.password"
+        placeholder="密码"
+      ></el-input>
     </el-form-item>
     <p class="form-text">
       <nuxt-link to="#">忘记密码</nuxt-link>
     </p>
-    <el-button type="primary" class="submit" @click="handleLoginSubmit">登录</el-button>
+    <el-button type="primary" class="submit" @click="handleLoginSubmit"
+      >登录</el-button
+    >
   </el-form>
 </template>
 
@@ -46,7 +52,13 @@ export default {
       //验证表单
       this.$refs.form.validate(isValue => {
         if (isValue) {
-          this.$store.dispatch("user/login",this.form).then(res=>{this.$router.push('/')})
+          this.$store.dispatch("user/login", this.form).then(res => {
+            this.$message({
+              type: "success",
+              message: "登录成功"
+            });
+            this.$router.push("/");
+          });
           /* try {
             const res = await this.$axios({
               url: "/accounts/login",
