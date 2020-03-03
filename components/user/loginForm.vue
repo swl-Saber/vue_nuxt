@@ -56,14 +56,17 @@ export default {
               }
             });
             console.log(res.data);
-            const { token, user } = res.data;
+            const { token } = res.data;
             // console.log(data.token);
-            localStorage.setItem("token", JSON.stringify(token));
-            localStorage.setItem("user_id", JSON.stringify(user.id));
-            this.$message({
-              type: "success",
-              message: "登录成功"
-            });
+            if (token) {
+              //这里使用vuex进行存储token
+              this.$store.commit("user/setUserInfo", res.data);
+              console.log(this.$store.state.user.userInfo.token);
+              this.$message({
+                type: "success",
+                message: "登录成功"
+              });
+            }
           } catch (error) {
             console.log(error);
             this.$message({

@@ -1,6 +1,5 @@
 <template>
   <div class="container">
-    {{$store.state.user.abc}}
     <!-- 引入Carousel 走马灯 -->
     <el-carousel indicator-position="outside">
       <el-carousel-item v-for="(item,index) of banners" :key="index">
@@ -67,10 +66,6 @@ export default {
   },
   mounted() {
     this.getBanners();
-    console.log(this.$store.state.user.abc);
-    setTimeout(() => {
-      this.$store.commit('user/setAbc',321)
-    }, 1000);   
   },
   methods: {
     async getBanners() {
