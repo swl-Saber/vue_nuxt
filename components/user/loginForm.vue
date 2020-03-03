@@ -55,9 +55,11 @@ export default {
           this.$store.dispatch("user/login", this.form).then(res => {
             this.$message({
               type: "success",
-              message: "登录成功"
+              message: "登录成功,正在跳转..."
             });
-            this.$router.push("/");
+            setTimeout(() => {
+              this.$router.push("/");
+            }, 1000);
           });
           /* try {
             const res = await this.$axios({
