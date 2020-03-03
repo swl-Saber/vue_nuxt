@@ -5,8 +5,7 @@ export default {
    */
   head: {
     title: "闲云旅游网",
-    meta: [
-      {
+    meta: [{
         charset: "utf-8"
       },
       {
@@ -19,8 +18,7 @@ export default {
         content: process.env.npm_package_description || ""
       }
     ],
-    link: [
-      {
+    link: [{
         rel: "icon",
         type: "image/x-icon",
         href: "/favicon.ico"
@@ -48,7 +46,15 @@ export default {
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: ["@/plugins/element-ui"],
+  plugins: ["@/plugins/element-ui",
+    //这个插件只能用在浏览器，服务器端不可以使用
+    //所以配置时需要使用一个对象
+    {
+      src: "@/plugins/localStorage",
+      //强调不能在服务器使用
+      ssr: false
+    }
+  ],
   /*
    ** Nuxt.js dev-modules
    */
