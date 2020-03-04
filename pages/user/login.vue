@@ -12,7 +12,8 @@
             @click="changeTab(index)"
           >{{item}}</span>
         </el-row>
-        <loginForm></loginForm>
+        <loginForm v-if="this.currentTab==0"></loginForm>
+        <registerForm v-else-if="this.currentTab==1"></registerForm>
       </div>
     </el-row> 
   </div>
@@ -20,6 +21,7 @@
 
 <script>
 import loginForm from "@/components/user/loginForm.vue";
+import registerForm from "@/components/user/registerForm.vue"
 export default {
   data() {
     return {
@@ -28,7 +30,8 @@ export default {
     };
   },
   components:{
-      loginForm
+      loginForm,
+      registerForm
   },
   methods: {
     changeTab(index) {
