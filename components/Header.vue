@@ -56,6 +56,7 @@ export default {
         // 用户退出
         handleLogout(){
             this.$store.commit('user/clearUserInfo');
+            //优化不需要clearUserInfo清除函数this.$store.commit('user/setUserInfo',{})
             this.$message({
                 type:'success',
                 message:'退出成功'
