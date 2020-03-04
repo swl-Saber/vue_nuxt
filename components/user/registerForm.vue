@@ -19,7 +19,7 @@
     <el-form-item class="form-item" prop="checkPassword">
       <el-input type="password" placeholder="确认密码" v-model="form.checkPassword"></el-input>
     </el-form-item>
-    <el-button type="primary" class="submit">注册</el-button>
+    <el-button type="primary" class="submit" @click="handleSubmit">注册</el-button>
   </el-form>
 </template>
 
@@ -56,6 +56,7 @@ export default {
     };
   },
   methods: {
+    //发送验证码
     handleSendCaptcha() {
       //如果手机号为空
       if (this.form.username == "") {
@@ -87,6 +88,37 @@ export default {
           showCancelButton: false,
           type: "warning"
         });
+      });
+    },
+    //注册发送请求
+    handleSubmit() {
+      //这里的...是把this.form剩余的参数拿出来
+      const { checkPassword, ...props } = this.form;
+      this.$axios({
+        url: "/accounts/register",
+        method: "post",
+        data: props
+        // data: {
+        //   username: this.form.username,
+        //   password: this.form.password,
+        //   nickname: this.form.nickname,
+        //   captcha: this.form.captcha
+        // }
+      }).then(res => {
+        console.log(res.data);
+        if (res.data.token) {
+          //1.自动登录
+          this.$store.commit("user/setUserInfo", res.data);
+          //2.弹窗提示
+          this.$message({
+            type: "success",
+            message: "注册成功,正在跳转页面..."
+          });
+          //3.延迟跳转页面
+          setTimeout(() => {
+            this.$router.push("/");
+          }, 1000);
+        }
       });
     }
   }
