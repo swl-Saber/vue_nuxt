@@ -53,7 +53,8 @@ export default {
       src: "@/plugins/localStorage",
       //强调不能在服务器使用
       ssr: false
-    }
+    },
+    '@/plugins/axios.js'
   ],
   /*
    ** Nuxt.js dev-modules

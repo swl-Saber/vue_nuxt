@@ -72,7 +72,7 @@ export default {
       try {
         //尝试运行
         const res = await this.$axios({ url: "/scenics/banners" });
-        console.log(res);
+        // console.log(res);
         const { data } = res.data;
         this.banners = data;
       } catch (error) {
