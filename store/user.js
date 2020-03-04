@@ -32,13 +32,17 @@ export const mutations = {
 // 使用action处理异步操作
 export const actions = {
   login(store, data) {
-    this.$axios({
+    //函数本身需要return this.$axios这个promise请求
+    //.then需要return res
+    //调用页面就可以在dispatch之后接着.then获取结果了
+    return this.$axios({
       url: "/accounts/login",
       method: "post",
       data
     }).then(res => {
       if (res.data.token) {
         store.commit("setUserInfo", res.data);
+        return res;
       }
     });
   }

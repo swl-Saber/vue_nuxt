@@ -1,7 +1,7 @@
 import {
   Message
 } from 'element-ui';
-console.log('这里是插件');
+// console.log('这里是插件');
 
 export default function ({
   $axios
