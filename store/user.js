@@ -21,6 +21,8 @@ export const mutations = {
     state.userInfo = data;
   },
   clearUserInfo(state) {
+    // process是当前运行的容器所有数据，其中的browser是一个布尔值
+    //如果当前是浏览器，返回true如果当前是在服务器，返回false
     if (process.browser) {
       localStorage.removeItem("userInfo");
     }
