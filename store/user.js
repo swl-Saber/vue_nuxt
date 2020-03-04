@@ -19,6 +19,12 @@ export const mutations = {
     //第一个是state对象本身
     //第二是外面调用时传入的数据
     state.userInfo = data;
+  },
+  clearUserInfo(state) {
+    if (process.browser) {
+      localStorage.removeItem("userInfo");
+    }
+    state.userInfo = {};
   }
 };
 // 使用action处理异步操作
@@ -31,10 +37,6 @@ export const actions = {
     }).then(res => {
       if (res.data.token) {
         store.commit("setUserInfo", res.data);
-        this.$message({
-          type: "success",
-          message: "登录成功"
-        });
       }
     });
   }
