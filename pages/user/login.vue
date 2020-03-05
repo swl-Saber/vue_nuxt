@@ -15,13 +15,13 @@
         <loginForm v-if="this.currentTab==0"></loginForm>
         <registerForm v-else-if="this.currentTab==1"></registerForm>
       </div>
-    </el-row> 
+    </el-row>
   </div>
 </template>
 
 <script>
 import loginForm from "@/components/user/loginForm.vue";
-import registerForm from "@/components/user/registerForm.vue"
+import registerForm from "@/components/user/registerForm.vue";
 export default {
   data() {
     return {
@@ -29,13 +29,20 @@ export default {
       loginList: ["登录", "注册"]
     };
   },
-  components:{
-      loginForm,
-      registerForm
+  // computed: {
+  //   currentTab() {
+  //     return this.$route.query.currentTab||0;
+  //   }
+  // },
+  components: {
+    loginForm,
+    registerForm
   },
   methods: {
     changeTab(index) {
       this.currentTab = index;
+      //将切换当前tab的index保存在url上，避免被刷新
+      this.$router.push("/user/login?currentTab=" + index);
     }
   }
 };
