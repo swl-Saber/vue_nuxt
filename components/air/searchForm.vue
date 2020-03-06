@@ -26,7 +26,7 @@
           v-model="form.departCity"
           placeholder="请搜索出发城市"
           class="el-autocomplete"
-          :fetch-suggestions="queryDepartSearch"
+          :fetch-suggestions="querySearch"
           @select="handleDepartSelect"
           :trigger-on-focus="false"
         ></el-autocomplete>
@@ -36,7 +36,7 @@
           v-model="form.arriveCity"
           placeholder="请搜索到达城市"
           class="el-autocomplete"
-          :fetch-suggestions="queryArriveSearch"
+          :fetch-suggestions="querySearch"
           @select="handleArriveSelect"
           :trigger-on-focus="false"
         ></el-autocomplete>
@@ -102,31 +102,31 @@ export default {
       this.currentTab = index;
     },
     //出发城市输入框获得焦点时触发
-    queryDepartSearch(searchValue, showList) {
-      //自带两个参数，第一个是当前输入值，第二个是返回数据并显示列表的回调函数
-      console.log("当前搜索值为" + searchValue);
-      //如果没有输入搜索内容，将返回
-      if (!searchValue) {
-        return;
-      }
-      this.$axios({
-        url: "/airs/city",
-        method: "get",
-        params: {
-          name: searchValue
-        }
-      }).then(res => {
-        console.log(res.data);
-        const { data } = res.data;
-        //显示列表的回调属性必须是value
-        const cityList = data.map(city => {
-          return { ...city, value: city.name };
-        });
-        showList(cityList);
-      });
-    },
-    //到达城市输入框获得焦点时触发
-    queryArriveSearch(searchValue, showList) {
+    // queryDepartSearch(searchValue, showList) {
+    //   //自带两个参数，第一个是当前输入值，第二个是返回数据并显示列表的回调函数
+    //   console.log("当前搜索值为" + searchValue);
+    //   //如果没有输入搜索内容，将返回
+    //   if (!searchValue) {
+    //     return;
+    //   }
+    //   this.$axios({
+    //     url: "/airs/city",
+    //     method: "get",
+    //     params: {
+    //       name: searchValue
+    //     }
+    //   }).then(res => {
+    //     console.log(res.data);
+    //     const { data } = res.data;
+    //     //显示列表的回调属性必须是value
+    //     const cityList = data.map(city => {
+    //       return { ...city, value: city.name };
+    //     });
+    //     showList(cityList);
+    //   });
+    // },
+    //封装输入框获得焦点时触发
+    querySearch(searchValue, showList) {
       if (!searchValue) {
         return;
       }
