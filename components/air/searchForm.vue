@@ -140,12 +140,25 @@ export default {
         }
       }).then(res => {
         const { data } = res.data;
-        const cityList = data.map(city => {
+        let cityList = data.map(city => {
           return {
             ...city,
             value: city.name
           };
         });
+        //过滤掉没有sort数据的城市
+        cityList = cityList.filter(city => {
+          //如果要保留元素应该返回true
+          //舍弃元素应该返回false
+          if (city.sort) {
+            return true;
+          } else {
+            return false;
+          }
+          // return city.sort;
+        });
+        console.log(cityList);
+
         showList(cityList);
       });
     },
