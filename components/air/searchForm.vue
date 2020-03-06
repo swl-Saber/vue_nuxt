@@ -3,17 +3,23 @@
     <!-- 头部切换 -->
     <el-row type="flex" class="search-tab">
       <span
-        v-for="(item,index) of tabs"
+        v-for="(item, index) of tabs"
         :key="index"
-        :class="{active:currentTab==index}"
+        :class="{ active: currentTab == index }"
         @click="changeTab(index)"
       >
         <i :class="item.icon"></i>
-        {{item.name}}
+        {{ item.name }}
       </span>
     </el-row>
     <!-- 搜索表单 -->
-    <el-form :model="form" :rules="rules" ref="form" label-width="80px" class="search-form-content">
+    <el-form
+      :model="form"
+      :rules="rules"
+      ref="form"
+      label-width="80px"
+      class="search-form-content"
+    >
       <el-form-item label="出发城市">
         <!-- input输入框-带建议输入 -->
         <el-autocomplete
@@ -21,7 +27,7 @@
           placeholder="请搜索出发城市"
           class="el-autocomplete"
           :fetch-suggestions="queryDepartSearch"
-          @select="handleDepartSelect" 
+          @select="handleDepartSelect"
           :trigger-on-focus="false"
         ></el-autocomplete>
       </el-form-item>
@@ -31,7 +37,7 @@
           placeholder="请搜索到达城市"
           class="el-autocomplete"
           :fetch-suggestions="queryArriveSearch"
-          @select="handleArriveSelect" 
+          @select="handleArriveSelect"
           :trigger-on-focus="false"
         ></el-autocomplete>
       </el-form-item>
@@ -42,10 +48,18 @@
           v-model="form.departDate"
           placeholder="请选择日期"
           style="width: 100%;"
+          @change="handleDate"
+          value-format="yyyy-MM-dd"
         ></el-date-picker>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" icon="el-icon-search" style="width:100%" @click="handleSubmit">搜索</el-button>
+        <el-button
+          type="primary"
+          icon="el-icon-search"
+          style="width:100%"
+          @click="handleSubmit"
+          >搜索</el-button
+        >
       </el-form-item>
       <!-- 换 -->
       <div class="change">
@@ -56,6 +70,8 @@
 </template>
 
 <script>
+// 引入momentjs包，转换日期格式
+import moment from "moment";
 export default {
   data() {
     return {
@@ -72,9 +88,9 @@ export default {
       ],
       form: {
         departCity: "",
-        departCode:"",//城市代号
+        departCode: "", //城市代号
         arriveCity: "",
-        arriveCode:"",//城市代号
+        arriveCode: "", //城市代号
         departDate: ""
       },
       rules: {}
@@ -134,15 +150,21 @@ export default {
     //出发城市下拉选择时触发
     handleDepartSelect(item) {
       console.log(item);
-      this.form.departCode=item.sort;
+      this.form.departCode = item.sort;
     },
     //到达城市下拉选择时触发
     handleArriveSelect(item) {
-      this.form.arriveCode=item.sort;
+      this.form.arriveCode = item.sort;
     },
     //处理表单发送请求
-    handleSubmit(){
+    handleSubmit() {
       console.log(this.form);
+    },
+    handleDate(date) {
+      console.log(date);
+      this.departDate = date;
+      //这里引入了moment库
+      // this.departDate = moment(date).format("YYYY - MM - DD");
     },
     //出发城市和目标城市切换时触发
     handleChange() {}
