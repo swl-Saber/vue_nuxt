@@ -102,12 +102,12 @@ export default {
     //tab切换时触发
     changeTab(index) {
       // this.currentTab = index;
-      if(index==1){
-        this.$confirm('目前不接受往返订单，请选择单程票','提示',{
-          confirmButtonText:'确认',
-          showCancelButton:false,
-          type:'warning'
-        })
+      if (index == 1) {
+        this.$confirm("目前不接受往返订单，请选择单程票", "提示", {
+          confirmButtonText: "确认",
+          showCancelButton: false,
+          type: "warning"
+        });
       }
     },
     //出发城市输入框获得焦点时触发
@@ -189,7 +189,17 @@ export default {
       // this.departDate = moment(date).format("YYYY - MM - DD");
     },
     //出发城市和目标城市切换时触发
-    handleChange() {}
+    handleChange() {
+      //先缓存到达城市原来的数据
+      const oldArriveCity = this.form.arriveCity;
+      const oldArriveCode = this.form.arriveCode;
+      //将出发城市赋值给到达城市数据
+      this.form.arriveCity = this.form.departCity;
+      this.form.arriveCode = this.form.departCode;
+      //再把缓存的数据赋值给出发城市
+      this.form.departCity = oldArriveCity;
+      this.form.departCode = oldArriveCode;
+    }
   }
 };
 </script>
