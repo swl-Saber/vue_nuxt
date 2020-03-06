@@ -199,6 +199,25 @@ export default {
     //处理表单发送请求
     handleSubmit() {
       console.log(this.form);
+      if(!this.form.departCity){
+        this.$message({
+          type:'error',
+          message:'请选择出发城市'
+        })
+        return;
+      }else if(!this.form.destCity){
+        this.$message({
+          type:'error',
+          message:'请选择到达城市'
+        })
+        return;
+      }else if(!this.form.departDate){
+        this.$message({
+          type:'error',
+          message:'请选择出发时间'
+        })
+        return;
+      }
       this.$router.push({
         path: "/air/flights",
         query: this.form
