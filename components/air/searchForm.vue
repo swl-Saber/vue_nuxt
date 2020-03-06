@@ -26,7 +26,7 @@
           v-model="form.departCity"
           placeholder="请搜索出发城市"
           class="el-autocomplete"
-          :fetch-suggestions="querySearch"
+          :fetch-suggestions="queryDepartSearch"
           @select="handleDepartSelect"
           :trigger-on-focus="false"
           :highlight-first-item="true"
@@ -37,7 +37,7 @@
           v-model="form.arriveCity"
           placeholder="请搜索到达城市"
           class="el-autocomplete"
-          :fetch-suggestions="querySearch"
+          :fetch-suggestions="queryArriveSearch"
           @select="handleArriveSelect"
           :trigger-on-focus="false"
           :highlight-first-item="true"
@@ -110,32 +110,49 @@ export default {
         });
       }
     },
-    //出发城市输入框获得焦点时触发
-    // queryDepartSearch(searchValue, showList) {
-    //   //自带两个参数，第一个是当前输入值，第二个是返回数据并显示列表的回调函数
-    //   console.log("当前搜索值为" + searchValue);
-    //   //如果没有输入搜索内容，将返回
-    //   if (!searchValue) {
-    //     return;
-    //   }
-    //   this.$axios({
-    //     url: "/airs/city",
-    //     method: "get",
-    //     params: {
-    //       name: searchValue
-    //     }
-    //   }).then(res => {
-    //     console.log(res.data);
-    //     const { data } = res.data;
-    //     //显示列表的回调属性必须是value
-    //     const cityList = data.map(city => {
-    //       return { ...city, value: city.name };
-    //     });
-    //     showList(cityList);
-    //   });
-    // },
-    //封装输入框获得焦点时触发
-    querySearch(searchValue, showList) {
+    // 出发城市输入框获得焦点时触发
+    queryDepartSearch(searchValue, showList) {
+      //自带两个参数，第一个是当前输入值，第二个是返回数据并显示列表的回调函数
+      console.log("当前搜索值为" + searchValue);
+      //如果没有输入搜索内容，将返回
+      if (!searchValue) {
+        return;
+      }
+      this.$axios({
+        url: "/airs/city",
+        method: "get",
+        params: {
+          name: searchValue
+        }
+      }).then(res => {
+        console.log(res.data);
+        const { data } = res.data;
+        //显示列表的回调属性必须是value
+        let cityList = data.map(city => {
+          return {
+            ...city,
+            value: city.name.replace(/市$/, "")
+          };
+        });
+        //过滤掉没有sort数据的城市
+        cityList = cityList.filter(city => {
+          //如果要保留元素应该返回true
+          //舍弃元素应该返回false
+          if (city.sort) {
+            return true;
+          } else {
+            return false;
+          }
+        });
+        console.log(cityList[0].sort);
+        this.form.departCode = cityList[0].sort;
+        // console.log(cityList);
+        showList(cityList);
+      });
+    },
+    //到达城市输入框获得焦点时触发
+    queryArriveSearch(searchValue, showList) {
+      //自带两个参数，第一个是当前输入值，第二个是返回数据并显示列表的回调函数
       if (!searchValue) {
         return;
       }
@@ -162,10 +179,10 @@ export default {
           } else {
             return false;
           }
-          // return city.sort;
         });
-        console.log(cityList);
-
+        console.log(cityList[0].sort);
+        this.form.arriveCode = cityList[0].sort;
+        // console.log(cityList);
         showList(cityList);
       });
     },
@@ -176,11 +193,16 @@ export default {
     },
     //到达城市下拉选择时触发
     handleArriveSelect(item) {
+      // console.log(item);
       this.form.arriveCode = item.sort;
     },
     //处理表单发送请求
     handleSubmit() {
       console.log(this.form);
+      this.$router.push({
+        path: "/air/flights",
+        query: this.form
+      });
     },
     handleDate(date) {
       console.log(date);
