@@ -4,10 +4,17 @@
 
 <script>
 export default {
-
-}
+  mounted() {
+    // console.log(this.$route.query);
+    this.$axios({
+      url: "/airs",
+      method: "get",
+      params: this.$route.query
+    }).then(res => {
+      console.log(res.data);
+    });
+  }
+};
 </script>
 
-<style>
-
-</style>
+<style></style>

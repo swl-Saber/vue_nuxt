@@ -34,11 +34,11 @@
       </el-form-item>
       <el-form-item label="到达城市">
         <el-autocomplete
-          v-model="form.arriveCity"
+          v-model="form.destCity"
           placeholder="请搜索到达城市"
           class="el-autocomplete"
-          :fetch-suggestions="queryArriveSearch"
-          @select="handleArriveSelect"
+          :fetch-suggestions="queryDestSearch"
+          @select="handleDestSelect"
           :trigger-on-focus="false"
           :highlight-first-item="true"
         ></el-autocomplete>
@@ -91,8 +91,8 @@ export default {
       form: {
         departCity: "",
         departCode: "", //城市代号
-        arriveCity: "",
-        arriveCode: "", //城市代号
+        destCity: "",
+        destCode: "", //城市代号
         departDate: ""
       },
       rules: {}
@@ -151,7 +151,7 @@ export default {
       });
     },
     //到达城市输入框获得焦点时触发
-    queryArriveSearch(searchValue, showList) {
+    queryDestSearch(searchValue, showList) {
       //自带两个参数，第一个是当前输入值，第二个是返回数据并显示列表的回调函数
       if (!searchValue) {
         return;
@@ -181,7 +181,7 @@ export default {
           }
         });
         console.log(cityList[0].sort);
-        this.form.arriveCode = cityList[0].sort;
+        this.form.destCode = cityList[0].sort;
         // console.log(cityList);
         showList(cityList);
       });
@@ -192,9 +192,9 @@ export default {
       this.form.departCode = item.sort;
     },
     //到达城市下拉选择时触发
-    handleArriveSelect(item) {
+    handleDestSelect(item) {
       // console.log(item);
-      this.form.arriveCode = item.sort;
+      this.form.destCode = item.sort;
     },
     //处理表单发送请求
     handleSubmit() {
@@ -213,14 +213,14 @@ export default {
     //出发城市和目标城市切换时触发
     handleChange() {
       //先缓存到达城市原来的数据
-      const oldArriveCity = this.form.arriveCity;
-      const oldArriveCode = this.form.arriveCode;
+      const oldDestCity = this.form.destCity;
+      const oldDestCode = this.form.destCode;
       //将出发城市赋值给到达城市数据
-      this.form.arriveCity = this.form.departCity;
-      this.form.arriveCode = this.form.departCode;
+      this.form.destCity = this.form.departCity;
+      this.form.destCode = this.form.departCode;
       //再把缓存的数据赋值给出发城市
-      this.form.departCity = oldArriveCity;
-      this.form.departCode = oldArriveCode;
+      this.form.departCity = oldDestCity;
+      this.form.departCode = oldDestCode;
     }
   }
 };
