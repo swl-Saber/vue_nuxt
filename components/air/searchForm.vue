@@ -29,6 +29,7 @@
           :fetch-suggestions="querySearch"
           @select="handleDepartSelect"
           :trigger-on-focus="false"
+          :highlight-first-item="true"
         ></el-autocomplete>
       </el-form-item>
       <el-form-item label="到达城市">
@@ -39,6 +40,7 @@
           :fetch-suggestions="querySearch"
           @select="handleArriveSelect"
           :trigger-on-focus="false"
+          :highlight-first-item="true"
         ></el-autocomplete>
       </el-form-item>
       <el-form-item label="出发时间">
