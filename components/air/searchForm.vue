@@ -21,7 +21,8 @@
           placeholder="请搜索出发城市"
           class="el-autocomplete"
           :fetch-suggestions="queryDepartSearch"
-          @select="handleDepartSelect"
+          @select="handleDepartSelect" 
+          :trigger-on-focus="false"
         ></el-autocomplete>
       </el-form-item>
       <el-form-item label="到达城市">
@@ -30,7 +31,8 @@
           placeholder="请搜索到达城市"
           class="el-autocomplete"
           :fetch-suggestions="queryArriveSearch"
-          @select="handleArriveSelect"
+          @select="handleArriveSelect" 
+          :trigger-on-focus="false"
         ></el-autocomplete>
       </el-form-item>
       <el-form-item label="出发时间">
