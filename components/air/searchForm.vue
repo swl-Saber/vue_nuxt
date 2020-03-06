@@ -101,7 +101,14 @@ export default {
   methods: {
     //tab切换时触发
     changeTab(index) {
-      this.currentTab = index;
+      // this.currentTab = index;
+      if(index==1){
+        this.$confirm('目前不接受往返订单，请选择单程票','提示',{
+          confirmButtonText:'确认',
+          showCancelButton:false,
+          type:'warning'
+        })
+      }
     },
     //出发城市输入框获得焦点时触发
     // queryDepartSearch(searchValue, showList) {
