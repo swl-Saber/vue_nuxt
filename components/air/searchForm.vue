@@ -21,6 +21,7 @@
           placeholder="请搜索出发城市"
           class="el-autocomplete"
           :fetch-suggestions="queryDepartSearch"
+          @select="handleDepartSelect"
         ></el-autocomplete>
       </el-form-item>
       <el-form-item label="到达城市">
@@ -29,6 +30,7 @@
           placeholder="请搜索到达城市"
           class="el-autocomplete"
           :fetch-suggestions="queryArriveSearch"
+          @select="handleArriveSelect"
         ></el-autocomplete>
       </el-form-item>
       <el-form-item label="出发时间">
@@ -41,7 +43,7 @@
         ></el-date-picker>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" icon="el-icon-search" style="width:100%">搜索</el-button>
+        <el-button type="primary" icon="el-icon-search" style="width:100%" @click="handleSubmit">搜索</el-button>
       </el-form-item>
       <!-- 换 -->
       <div class="change">
@@ -68,7 +70,9 @@ export default {
       ],
       form: {
         departCity: "",
+        departCode:"",//城市代号
         arriveCity: "",
+        arriveCode:"",//城市代号
         departDate: ""
       },
       rules: {}
@@ -122,13 +126,26 @@ export default {
             value: city.name
           };
         });
-          showList(cityList);
+        showList(cityList);
       });
     },
+    //出发城市下拉选择时触发
+    handleDepartSelect(item) {
+      console.log(item);
+      this.form.departCode=item.sort;
+    },
+    //到达城市下拉选择时触发
+    handleArriveSelect(item) {
+      this.form.arriveCode=item.sort;
+    },
+    //处理表单发送请求
+    handleSubmit(){
+      console.log(this.form);
+    },
     //出发城市和目标城市切换时触发
-    handleChange(){}
+    handleChange() {}
   }
-}
+};
 </script>
 
 <style lang="less" scoped>
