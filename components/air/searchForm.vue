@@ -16,14 +16,29 @@
     <el-form :model="form" :rules="rules" ref="form" label-width="80px" class="search-form-content">
       <el-form-item label="出发城市">
         <!-- input输入框-带建议输入 -->
-        <el-autocomplete v-model="form.departCity" placeholder="请搜索出发城市" class="el-autocomplete"  :fetch-suggestions="queryDepartSearch"></el-autocomplete>
+        <el-autocomplete
+          v-model="form.departCity"
+          placeholder="请搜索出发城市"
+          class="el-autocomplete"
+          :fetch-suggestions="queryDepartSearch"
+        ></el-autocomplete>
       </el-form-item>
       <el-form-item label="到达城市">
-        <el-autocomplete v-model="form.arriveCity" placeholder="请搜索到达城市" class="el-autocomplete"  :fetch-suggestions="queryArriveSearch"></el-autocomplete>
+        <el-autocomplete
+          v-model="form.arriveCity"
+          placeholder="请搜索到达城市"
+          class="el-autocomplete"
+          :fetch-suggestions="queryArriveSearch"
+        ></el-autocomplete>
       </el-form-item>
       <el-form-item label="出发时间">
         <!-- 日期选择器 -->
-        <el-date-picker type="date" v-model="form.departDate" placeholder="请选择日期" style="width: 100%;"></el-date-picker>
+        <el-date-picker
+          type="date"
+          v-model="form.departDate"
+          placeholder="请选择日期"
+          style="width: 100%;"
+        ></el-date-picker>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" style="width:100%">搜索</el-button>
@@ -52,9 +67,9 @@ export default {
         }
       ],
       form: {
-        departCity:'',
-        arriveCity:'',
-        departDate:''
+        departCity: "",
+        arriveCity: "",
+        departDate: ""
       },
       rules: {}
     };
@@ -65,28 +80,55 @@ export default {
       this.currentTab = index;
     },
     //出发城市输入框获得焦点时触发
-    queryDepartSearch(searchValue,showList){
-      //自带两个参数，第一个是当前输入值，第二个是返回数据并显示列表的回调
-      console.log('当前搜索值为'+searchValue);
-      const res=[
-        {
-          value:'上海',
-        },
-        {
-          value:'广州',
-        },
-        {
-          value:'深圳'
+    queryDepartSearch(searchValue, showList) {
+      //自带两个参数，第一个是当前输入值，第二个是返回数据并显示列表的回调函数
+      console.log("当前搜索值为" + searchValue);
+      //如果没有输入搜索内容，将返回
+      if (!searchValue) {
+        return;
+      }
+      this.$axios({
+        url: "/airs/city",
+        method: "get",
+        params: {
+          name: searchValue
         }
-      ]
-      showList(res)
+      }).then(res => {
+        console.log(res.data);
+        const { data } = res.data;
+        //显示列表的回调属性必须是value
+        const cityList = data.map(city => {
+          return { ...city, value: city.name };
+        });
+        showList(cityList);
+      });
     },
     //到达城市输入框获得焦点时触发
-    queryArriveSearch(){},
+    queryArriveSearch(searchValue, showList) {
+      if (!searchValue) {
+        return;
+      }
+      this.$axios({
+        url: "/airs/city",
+        method: "get",
+        params: {
+          name: searchValue
+        }
+      }).then(res => {
+        const { data } = res.data;
+        const cityList = data.map(city => {
+          return {
+            ...city,
+            value: city.name
+          };
+        });
+          showList(cityList);
+      });
+    },
     //出发城市和目标城市切换时触发
-    handleChange(){},
+    handleChange(){}
   }
-};
+}
 </script>
 
 <style lang="less" scoped>
