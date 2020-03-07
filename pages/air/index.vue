@@ -33,17 +33,43 @@
       <span class="iconfont icontejiajipiao"></span>
       特价机票
     </h2>
-    <div class="sale-pic">
-      图片
+    <div class="air-sale">
+      <el-row type="flex" justify="space-between" class="air-sale-pic">
+        <el-col :span="6" v-for="(item,index) of saleList" :key="index" class="item">
+          <nuxt-link :to="`/air/flights?departCity=${item.departCity}&departCode=${item.departCode}&destCity=${item.destCity}&destCode=${item.destCode}`">
+            <img :src="item.cover" alt />
+            <el-row type="flex" justify="space-between">
+              <span>{{item.departCity}}-{{item.destCity}}</span>
+              <span>￥{{item.price}}</span>
+            </el-row>
+          </nuxt-link>
+        </el-col>
+      </el-row>
     </div>
   </section>
 </template>
 
 <script>
-import searchForm from "@/components/air/searchForm"
+import searchForm from "@/components/air/searchForm";
 export default {
-  components:{
+  data() {
+    return {
+      saleList: []
+    };
+  },
+  components: {
     searchForm
+  },
+  mounted() {
+    //获取特价机票列表数据
+    this.$axios({
+      url: "/airs/sale",
+      method: "get"
+    }).then(res => {
+      console.log(res.data);
+      const { data } = res.data;
+      this.saleList = data;
+    });
   }
 };
 </script>
@@ -87,9 +113,39 @@ export default {
     font-weight: normal;
     margin: 10px 0;
     font-size: 20px;
-    color: #409EFF;
+    color: #409eff;
     .icontejiajipiao {
       font-size: 20px;
+    }
+  }
+  .air-sale {
+    border: 1px solid #ccc;
+    padding: 22px;
+    margin-bottom: 52px;
+    .air-sale-pic {
+      cursor: pointer;
+      > div {
+        width: 225px;
+        height: 139px;
+        position: relative;
+        overflow: hidden;
+      }
+      .el-col {
+        position: relative;
+        img {
+          width: 100%;
+        }
+        .el-row {
+          position: absolute;
+          left: 0;
+          bottom: 0;
+          width: 225px;
+          padding: 5px 10px;
+          font-size: 14px;
+          color: #fff;
+          background-color: rgba(0, 0, 0, 0.5);
+        }
+      }
     }
   }
 }
