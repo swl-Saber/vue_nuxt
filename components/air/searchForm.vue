@@ -1,13 +1,5 @@
 <template>
   <div class="search-form">
-    <!-- 临时调试 -->
-    <ul>
-      <li>出发城市: {{form.departCity}}</li>
-      <li>出发代码: {{form.departCode}}</li>
-      <li>到达城市: {{form.destCity}}</li>
-      <li>到达代码: {{form.destCode}}</li>
-      <li>出发时间: {{form.departDate}}</li>
-    </ul>
     <!-- 头部切换 -->
     <el-row type="flex" class="search-tab">
       <span
