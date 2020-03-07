@@ -8,7 +8,7 @@
         <!-- 航班头部布局 -->
         <flightsListHead></flightsListHead>
         <!-- 航班信息 -->
-        <div>航班信息</div>
+        <flightsItem></flightsItem>
       </div>
       <!-- 侧边栏 -->
       <div class="aside">侧边栏组件</div>
@@ -18,12 +18,14 @@
 
 <script>
 import flightsListHead from "@/components/air/flightsListHead";
+import flightsItem from "@/components/air/flightsItem";
 export default {
   mounted() {
     this.getFlightsList();
   },
   components:{
-    flightsListHead
+    flightsListHead,
+    flightsItem
   },
   methods: {
     //获取机票列表
