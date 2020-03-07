@@ -13,13 +13,7 @@
       </span>
     </el-row>
     <!-- 搜索表单 -->
-    <el-form
-      :model="form"
-      :rules="rules"
-      ref="form"
-      label-width="80px"
-      class="search-form-content"
-    >
+    <el-form :model="form" :rules="rules" ref="form" label-width="80px" class="search-form-content">
       <el-form-item label="出发城市">
         <!-- input输入框-带建议输入 -->
         <el-autocomplete
@@ -55,13 +49,7 @@
         ></el-date-picker>
       </el-form-item>
       <el-form-item>
-        <el-button
-          type="primary"
-          icon="el-icon-search"
-          style="width:100%"
-          @click="handleSubmit"
-          >搜索</el-button
-        >
+        <el-button type="primary" icon="el-icon-search" style="width:100%" @click="handleSubmit">搜索</el-button>
       </el-form-item>
       <!-- 换 -->
       <div class="change">
@@ -110,15 +98,15 @@ export default {
         });
       }
     },
-    // 出发城市输入框获得焦点时触发
-    queryDepartSearch(searchValue, showList) {
+    //封装获取搜索建议函数
+    getCityList(searchValue) {
       //自带两个参数，第一个是当前输入值，第二个是返回数据并显示列表的回调函数
       console.log("当前搜索值为" + searchValue);
       //如果没有输入搜索内容，将返回
       if (!searchValue) {
         return;
       }
-      this.$axios({
+      return this.$axios({
         url: "/airs/city",
         method: "get",
         params: {
@@ -143,43 +131,23 @@ export default {
           } else {
             return false;
           }
+          // return city.sort;
         });
+        return cityList;
+      });
+    },
+    // 出发城市输入框获得焦点时触发
+    queryDepartSearch(searchValue, showList) {
+      this.getCityList(searchValue).then(cityList => {
+        // console.log(cityList);
         console.log(cityList[0].sort);
         this.form.departCode = cityList[0].sort;
-        // console.log(cityList);
         showList(cityList);
       });
     },
     //到达城市输入框获得焦点时触发
     queryDestSearch(searchValue, showList) {
-      //自带两个参数，第一个是当前输入值，第二个是返回数据并显示列表的回调函数
-      if (!searchValue) {
-        return;
-      }
-      this.$axios({
-        url: "/airs/city",
-        method: "get",
-        params: {
-          name: searchValue
-        }
-      }).then(res => {
-        const { data } = res.data;
-        let cityList = data.map(city => {
-          return {
-            ...city,
-            value: city.name.replace(/市$/, "")
-          };
-        });
-        //过滤掉没有sort数据的城市
-        cityList = cityList.filter(city => {
-          //如果要保留元素应该返回true
-          //舍弃元素应该返回false
-          if (city.sort) {
-            return true;
-          } else {
-            return false;
-          }
-        });
+      this.getCityList(searchValue).then(cityList => {
         console.log(cityList[0].sort);
         this.form.destCode = cityList[0].sort;
         // console.log(cityList);
@@ -199,23 +167,23 @@ export default {
     //处理表单发送请求
     handleSubmit() {
       console.log(this.form);
-      if(!this.form.departCity){
+      if (!this.form.departCity) {
         this.$message({
-          type:'error',
-          message:'请选择出发城市'
-        })
+          type: "error",
+          message: "请选择出发城市"
+        });
         return;
-      }else if(!this.form.destCity){
+      } else if (!this.form.destCity) {
         this.$message({
-          type:'error',
-          message:'请选择到达城市'
-        })
+          type: "error",
+          message: "请选择到达城市"
+        });
         return;
-      }else if(!this.form.departDate){
+      } else if (!this.form.departDate) {
         this.$message({
-          type:'error',
-          message:'请选择出发时间'
-        })
+          type: "error",
+          message: "请选择出发时间"
+        });
         return;
       }
       this.$router.push({
@@ -223,6 +191,7 @@ export default {
         query: this.form
       });
     },
+    //选择日期触发
     handleDate(date) {
       console.log(date);
       this.departDate = date;
