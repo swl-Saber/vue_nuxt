@@ -4,7 +4,8 @@
       <!-- 显示的机票信息 -->
       <el-row type="flex" align="middle" class="flight-info">
         <el-col :span="6">
-          <span>{{flights.airline_name}}</span> {{flights.flight_no}}
+          <span>{{flights.airline_name}}</span>
+          {{flights.flight_no}}
         </el-col>
         <el-col :span="12">
           <el-row type="flex" justify="space-between" class="flight-info-center">
@@ -13,7 +14,7 @@
               <span>{{flights.org_airport_name}}</span>
             </el-col>
             <el-col :span="8" class="flight-time">
-              <span>2时20分</span>
+              <span>{{time}}</span>
             </el-col>
             <el-col :span="8" class="flight-airport">
               <strong>{{flights.arr_time}}</strong>
@@ -30,12 +31,19 @@
     <!-- 推荐座位信息 -->
     <div class="flight-recommend">
       <!-- 隐藏的座位信息列表 -->
-      <el-row type="flex" justify="space-between" align="middle" v-for="(item,index) of flights.seat_infos" :key="index">
+      <el-row
+        type="flex"
+        justify="space-between"
+        align="middle"
+        v-for="(item,index) of flights.seat_infos"
+        :key="index"
+      >
         <el-col :span="4">低价推荐</el-col>
         <el-col :span="20">
           <el-row type="flex" justify="space-between" align="middle" class="flight-sell">
             <el-col :span="16" class="flight-sell-left">
-              <span>{{item.group_name}}</span> | {{item.supplierName}}
+              <span>{{item.group_name}}</span>
+              | {{item.supplierName}}
             </el-col>
             <el-col :span="5" class="price">￥{{item.settle_price}}</el-col>
             <el-col :span="3" class="choose-button">
@@ -51,7 +59,26 @@
 
 <script>
 export default {
-    props:['flights']
+  props: ["flights"],
+  computed: {
+    time() {
+      const arr = this.flights.arr_time.split(":");
+      const dep = this.flights.dep_time.split(":");
+
+      const arrTime = arr[0] * 60 + +arr[1];
+      const depTime = dep[0] * 60 + +dep[1];
+
+      let dis = arrTime - depTime;
+      //如果减出来是负数，说明已经过了凌晨，需要加多24小时
+      if (dis < 0) {
+        dis = arrTime + 24 * 60 - depTime;
+      }
+      let hour = Math.floor(dis / 60);
+      let minute = dis % 60;
+
+      return hour + "小时" + minute + "分";
+    }
+  }
 };
 </script>
 
