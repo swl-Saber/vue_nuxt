@@ -17,7 +17,7 @@ export default {};
   border: 1px solid #ccc;
   background-color: #f6f6f6;
   padding: 12px 0;
-  margin: 22px 17px 12px 0;
+  margin: 22px 0 12px 0;
   color: #666666;
 }
 </style>
