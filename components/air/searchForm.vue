@@ -1,5 +1,13 @@
 <template>
   <div class="search-form">
+    <!-- 临时调试 -->
+    <ul>
+      <li>出发城市: {{form.departCity}}</li>
+      <li>出发代码: {{form.departCode}}</li>
+      <li>到达城市: {{form.destCity}}</li>
+      <li>到达代码: {{form.destCode}}</li>
+      <li>出发时间: {{form.departDate}}</li>
+    </ul>
     <!-- 头部切换 -->
     <el-row type="flex" class="search-tab">
       <span
@@ -140,9 +148,19 @@ export default {
     queryDepartSearch(searchValue, showList) {
       this.getCityList(searchValue).then(cityList => {
         // console.log(cityList);
-        console.log(cityList[0].sort);
-        this.form.departCode = cityList[0].sort;
-        showList(cityList);
+        // console.log(cityList[0].sort);
+        //如果获取不到任何匹配，显示不支持该城市名
+        if (cityList.length > 0) {
+          this.form.departCode = cityList[0].sort;
+          showList(cityList);
+        }else{
+          const suggestion=[
+            {
+              value:'不支持该城市名'
+            }
+          ]
+          showList(suggestion)
+        }
       });
     },
     //到达城市输入框获得焦点时触发
