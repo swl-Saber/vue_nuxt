@@ -8,7 +8,7 @@
         <!-- 航班头部布局 -->
         <flightsListHead></flightsListHead>
         <!-- 航班信息 -->
-        <flightsItem></flightsItem>
+        <flightsItem :flights="item" v-for="(item,index) of flightsList" :key="index"></flightsItem>
       </div>
       <!-- 侧边栏 -->
       <div class="aside">侧边栏组件</div>
@@ -20,6 +20,14 @@
 import flightsListHead from "@/components/air/flightsListHead";
 import flightsItem from "@/components/air/flightsItem";
 export default {
+  data() {
+    return {
+      //机票列表数据
+      flightsList:[],
+      //获取到的总数据
+      totalData:{}
+    }
+  },
   mounted() {
     this.getFlightsList();
   },
@@ -37,6 +45,9 @@ export default {
         params: this.$route.query
       }).then(res => {
         console.log(res.data);
+        const {flights}=res.data;
+        this.flightsList=flights;
+        this.totalData=res.data;  
       });
     }
   }

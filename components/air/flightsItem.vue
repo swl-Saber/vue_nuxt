@@ -50,7 +50,9 @@
 </template>
 
 <script>
-export default {};
+export default {
+    props:['flights']
+};
 </script>
 
 <style scoped lang="less">
