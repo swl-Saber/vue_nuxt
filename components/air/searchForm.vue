@@ -146,22 +146,22 @@ export default {
     },
     // 出发城市输入框获得焦点时触发
     queryDepartSearch(searchValue, showList) {
-        this.getCityList(searchValue).then(cityList => {
-          // console.log(cityList);
-          // console.log(cityList[0].sort);
-          //如果获取不到任何匹配，显示不支持该城市名
-          if (cityList.length > 0) {
-            this.form.departCode = cityList[0].sort;
-            showList(cityList);
-          } else {
-            const suggestion = [
-              {
-                value: "不支持该城市名"
-              }
-            ];
-            showList(suggestion);
-          }
-        });
+      this.getCityList(searchValue).then(cityList => {
+        // console.log(cityList);
+        // console.log(cityList[0].sort);
+        //如果获取不到任何匹配，显示不支持该城市名
+        if (cityList.length > 0) {
+          this.form.departCode = cityList[0].sort;
+          showList(cityList);
+        } else {
+          const suggestion = [
+            {
+              value: "不支持该城市名"
+            }
+          ];
+          showList(suggestion);
+        }
+      });
     },
     //到达城市输入框获得焦点时触发
     queryDestSearch(searchValue, showList) {
@@ -172,13 +172,13 @@ export default {
           this.form.destCode = cityList[0].sort;
           // console.log(cityList);
           showList(cityList);
-        }else{
-          const suggestion=[
+        } else {
+          const suggestion = [
             {
-              value:'不支持该城市名'
+              value: "不支持该城市名"
             }
-          ]
-          showList(suggestion)
+          ];
+          showList(suggestion);
         }
       });
     },
@@ -213,6 +213,21 @@ export default {
           message: "请选择出发时间"
         });
         return;
+      }
+      //提交表单时，校验一下code是否有数据
+      if (!this.form.departCode) {
+        this.getCityList(searchValue).then(cityList => {
+          if (cityList.length > 0) {
+            this.form.departCode = cityList[0].sort;
+          }
+        });
+      }
+      if (!this.form.destCode) {
+        this.getCityList(searchValue).then(cityList => {
+          if (cityList.length > 0) {
+            this.form.destCode = cityList[0].sort;
+          }
+        });
       }
       this.$router.push({
         path: "/air/flights",
