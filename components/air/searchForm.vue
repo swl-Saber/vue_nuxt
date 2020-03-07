@@ -146,8 +146,6 @@ export default {
     },
     // 出发城市输入框获得焦点时触发
     queryDepartSearch(searchValue, showList) {
-      // 模拟网络状态差，接口数据延时的情况
-      setTimeout(()=>{
         this.getCityList(searchValue).then(cityList => {
           // console.log(cityList);
           // console.log(cityList[0].sort);
@@ -164,7 +162,6 @@ export default {
             showList(suggestion);
           }
         });
-      },3000)
     },
     //到达城市输入框获得焦点时触发
     queryDestSearch(searchValue, showList) {
