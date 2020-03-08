@@ -4,7 +4,7 @@
       <!-- 顶部过滤列表 -->
       <div class="flights-content">
         <!-- 过滤条件 -->
-        <div>过滤条件</div>
+        <flightsFilters></flightsFilters>
         <!-- 航班头部布局 -->
         <flightsListHead></flightsListHead>
         <!-- 航班信息 -->
@@ -29,6 +29,7 @@
 <script>
 import flightsListHead from "@/components/air/flightsListHead";
 import flightsItem from "@/components/air/flightsItem";
+import flightsFilters from "@/components/air/flightsFilters";
 export default {
   data() {
     return {
@@ -47,7 +48,8 @@ export default {
   },
   components: {
     flightsListHead,
-    flightsItem
+    flightsItem,
+    flightsFilters
   },
   methods: {
     //获取机票总数据
