@@ -39,8 +39,12 @@
       </el-col>
       <el-col :span="4">
         <el-select size="mini" v-model="airSize" placeholder="机型" @change="handleAirSize">
-          <el-option v-for="(item,index) of sizeOptions"
-            :key="index" :label="item.name" :value="item.size"></el-option>
+          <el-option
+            v-for="(item,index) of sizeOptions"
+            :key="index"
+            :label="item.name"
+            :value="item.size"
+          ></el-option>
         </el-select>
       </el-col>
     </el-row>
@@ -55,11 +59,11 @@
 export default {
   data() {
     return {
-        sizeOptions:[
-            {name:'大',size:'L'},
-            {name:'中',size:'M'},
-            {name:'小',size:'S'},
-        ],
+      sizeOptions: [
+        { name: "大", size: "L" },
+        { name: "中", size: "M" },
+        { name: "小", size: "S" }
+      ],
       airport: "",
       flightTimes: "",
       company: "",
@@ -75,7 +79,13 @@ export default {
     handleFlightTimes(value) {},
 
     // 选择航空公司时候触发
-    handleCompany(value) {},
+    handleCompany() {
+         //过滤出公司名相同的数据，使用自定义事件把过滤的数据传给父组件渲染
+      const newFliterData = this.totalData.flights.filter(flight => {
+        return flight.airline_name == this.company;
+      });
+      this.$emit('setFlightList',newFliterData)
+    },
 
     // 选择机型时候触发
     handleAirSize(value) {},

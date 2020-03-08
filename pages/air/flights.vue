@@ -4,7 +4,11 @@
       <!-- 顶部过滤列表 -->
       <div class="flights-content">
         <!-- 过滤条件 -->
-        <flightsFilters v-if="totalData.options" :totalData="totalData"></flightsFilters>
+        <flightsFilters
+          v-if="totalData.options"
+          :totalData="totalData"
+          @setFlightList="setFlightList"
+        ></flightsFilters>
         <!-- 航班头部布局 -->
         <flightsListHead></flightsListHead>
         <!-- 航班信息 -->
@@ -53,14 +57,14 @@ export default {
     flightsFilters
   },
   computed: {
-    flightsList(){
+    flightsList() {
       const start = this.pageSize * (this.currentPage - 1);
       const end = this.pageSize * this.currentPage;
       //等发送请求获取数据totalData后，监听到totalData.flights有数据后，进行计算
-      if(this.totalData.flights){
+      if (this.totalData.flights) {
         return this.totalData.flights.slice(start, end);
-      }else{
-        return []
+      } else {
+        return [];
       }
     }
   },
@@ -90,6 +94,10 @@ export default {
       console.log("当前页", value);
       this.currentPage = value;
     },
+    //接收子组件传来的筛选过滤数据
+    setFlightList(newFliterData) {
+      this.totalData.flights = newFliterData;
+    }
   }
 };
 </script>
