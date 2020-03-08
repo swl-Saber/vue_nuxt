@@ -34,7 +34,7 @@ export default {
   data() {
     return {
       //机票列表数据, 渲染列表数据
-      flightsList: [],
+      // flightsList: [],
       //获取到的总数据
       totalData: {},
       //当前页
@@ -51,6 +51,18 @@ export default {
     flightsItem,
     flightsFilters
   },
+  computed: {
+    flightsList(){
+      const start = this.pageSize * (this.currentPage - 1);
+      const end = this.pageSize * this.currentPage;
+      //等发送请求获取数据totalData后，监听到totalData.flights有数据后，进行计算
+      if(this.totalData.flights){
+        return this.totalData.flights.slice(start, end);
+      }else{
+        return []
+      }
+    }
+  },
   methods: {
     //获取机票总数据
     getFlightsData() {
@@ -61,33 +73,22 @@ export default {
         params: this.$route.query
       }).then(res => {
         console.log(res.data);
-        const { flights } = res.data;
-        //机票列表
-        this.flightsList = flights;
         //机票总数据
         this.totalData = res.data;
-        //进页面先加载一遍函数
-        this.setCurrentData();
+        //机票列表
+        // this.flightsList = this.totalData.flights;
       });
     },
     //pageSize 改变时会触发
     handleSizeChange(value) {
       console.log("每页条数", value);
       this.pageSize = value;
-      this.setCurrentData();
     },
     //currentPage 改变时会触发
     handleCurrentChange(value) {
       console.log("当前页", value);
       this.currentPage = value;
-      this.setCurrentData();
     },
-    //设置点击跳转页数的当前页数据
-    setCurrentData() {
-      const start = this.pageSize * (this.currentPage - 1);
-      const end = this.pageSize * this.currentPage;
-      this.flightsList = this.totalData.flights.slice(start, end);
-    }
   }
 };
 </script>
