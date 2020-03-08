@@ -11,6 +11,7 @@
         <flightsItem :flights="item" v-for="(item,index) of flightsList" :key="index"></flightsItem>
         <!-- Pagination分页组件 -->
         <el-pagination
+          v-if="totalData.flights&&totalData.flights.length>0"
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
           :current-page="currentPage"
