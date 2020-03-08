@@ -6,7 +6,7 @@
         <!-- 过滤条件 -->
         <flightsFilters
           v-if="totalData.options"
-          :totalData="totalData"
+          :totalData="copyTotalData"
           @setFlightList="setFlightList"
         ></flightsFilters>
         <!-- 航班头部布局 -->
@@ -40,6 +40,8 @@ export default {
     return {
       //机票列表数据, 渲染列表数据
       // flightsList: [],
+      // 深拷贝一份总数据用来筛选
+      copyTotalData:{},
       //获取到的总数据
       totalData: {},
       //当前页
@@ -80,6 +82,8 @@ export default {
         console.log(res.data);
         //机票总数据
         this.totalData = res.data;
+        //这里深拷贝一份数据用来筛选
+         this.copyTotalData={...this.totalData}
         //机票列表
         // this.flightsList = this.totalData.flights;
       });
