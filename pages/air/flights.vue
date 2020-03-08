@@ -4,7 +4,7 @@
       <!-- 顶部过滤列表 -->
       <div class="flights-content">
         <!-- 过滤条件 -->
-        <flightsFilters></flightsFilters>
+        <flightsFilters v-if="totalData.options" :totalData="totalData"></flightsFilters>
         <!-- 航班头部布局 -->
         <flightsListHead></flightsListHead>
         <!-- 航班信息 -->
