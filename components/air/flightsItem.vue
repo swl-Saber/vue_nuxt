@@ -1,8 +1,8 @@
 <template>
   <div class="flight-item">
-    <div @click="showSeatList">
+    <div>
       <!-- 显示的机票信息 -->
-      <el-row type="flex" align="middle" class="flight-info">
+      <el-row type="flex" align="middle" class="flight-info" @click.native="showSeatList">
         <el-col :span="6">
           <span>{{flights.airline_name}}</span>
           {{flights.flight_no}}
@@ -29,31 +29,34 @@
       </el-row>
     </div>
     <!-- 推荐座位信息 -->
-    <div class="flight-recommend" v-if="isShow">
-      <!-- 隐藏的座位信息列表 -->
-      <el-row
-        type="flex"
-        justify="space-between"
-        align="middle"
-        v-for="(item,index) of flights.seat_infos"
-        :key="index"
-      >
-        <el-col :span="4">低价推荐</el-col>
-        <el-col :span="20">
-          <el-row type="flex" justify="space-between" align="middle" class="flight-sell">
-            <el-col :span="16" class="flight-sell-left">
-              <span>{{item.group_name}}</span>
-              | {{item.supplierName}}
-            </el-col>
-            <el-col :span="5" class="price">￥{{item.settle_price}}</el-col>
-            <el-col :span="3" class="choose-button">
-              <el-button type="warning" size="mini">选定</el-button>
-              <p>剩余：{{item.discount}}</p>
-            </el-col>
-          </el-row>
-        </el-col>
-      </el-row>
-    </div>
+    <!-- 这里插入内置过渡动画 -->
+    <el-collapse-transition>
+      <div class="flight-recommend" v-if="isShow">
+        <!-- 隐藏的座位信息列表 -->
+        <el-row
+          type="flex"
+          justify="space-between"
+          align="middle"
+          v-for="(item,index) of flights.seat_infos"
+          :key="index"
+        >
+          <el-col :span="4">低价推荐</el-col>
+          <el-col :span="20">
+            <el-row type="flex" justify="space-between" align="middle" class="flight-sell">
+              <el-col :span="16" class="flight-sell-left">
+                <span>{{item.group_name}}</span>
+                | {{item.supplierName}}
+              </el-col>
+              <el-col :span="5" class="price">￥{{item.settle_price}}</el-col>
+              <el-col :span="3" class="choose-button">
+                <el-button type="warning" size="mini">选定</el-button>
+                <p>剩余：{{item.discount}}</p>
+              </el-col>
+            </el-row>
+          </el-col>
+        </el-row>
+      </div>
+    </el-collapse-transition>
   </div>
 </template>
 
@@ -85,7 +88,7 @@ export default {
     }
   },
   methods: {
-      //控制推荐列表的展开收起
+    //控制推荐列表的展开收起
     showSeatList() {
       this.isShow = !this.isShow;
     }
