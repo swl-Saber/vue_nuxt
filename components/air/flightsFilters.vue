@@ -73,22 +73,39 @@ export default {
   props: ["totalData"],
   methods: {
     // 选择机场时候触发
-    handleAirport(value) {},
+    handleAirport() {
+      const newFliterData = this.totalData.flights.filter(flight => {
+        return flight.org_airport_name == this.airport;
+      });
+      this.$emit("setFlightList", newFliterData);
+    },
 
     // 选择出发时间时候触发
-    handleFlightTimes(value) {},
+    handleFlightTimes() {
+      const [from, to] = this.flightTimes.split(",");
+      const newFliterData = this.totalData.flights.filter(flight => {
+        const start = flight.dep_time.split(":")[0];
+        return Number(from) <= Number(start) && Number(to) > Number(start);
+      });
+      this.$emit("setFlightList", newFliterData);
+    },
 
     // 选择航空公司时候触发
     handleCompany() {
-         //过滤出公司名相同的数据，使用自定义事件把过滤的数据传给父组件渲染
+      //过滤出公司名相同的数据，使用自定义事件把过滤的数据传给父组件渲染
       const newFliterData = this.totalData.flights.filter(flight => {
         return flight.airline_name == this.company;
       });
-      this.$emit('setFlightList',newFliterData)
+      this.$emit("setFlightList", newFliterData);
     },
 
     // 选择机型时候触发
-    handleAirSize(value) {},
+    handleAirSize() {
+      const newFliterData = this.totalData.flights.filter(flight => {
+        return flight.plane_size == this.airSize;
+      });
+      this.$emit("setFlightList", newFliterData);
+    },
 
     // 撤销条件时候触发
     handleFiltersCancel() {}
