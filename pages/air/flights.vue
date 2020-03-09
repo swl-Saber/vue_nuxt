@@ -13,6 +13,7 @@
         <flightsListHead></flightsListHead>
         <!-- 航班信息 -->
         <flightsItem :flights="item" v-for="(item,index) of flightsList" :key="index"></flightsItem>
+        <div v-if="totalData.flights&&totalData.flights.length==0">暂无数据</div>
         <!-- Pagination分页组件 -->
         <el-pagination
           v-if="totalData.flights&&totalData.flights.length>0"
@@ -26,7 +27,7 @@
         ></el-pagination>
       </div>
       <!-- 侧边栏 -->
-      <div class="aside">侧边栏组件</div>
+      <flightsAside></flightsAside>
     </el-row>
   </section>
 </template>
@@ -35,13 +36,14 @@
 import flightsListHead from "@/components/air/flightsListHead";
 import flightsItem from "@/components/air/flightsItem";
 import flightsFilters from "@/components/air/flightsFilters";
+import flightsAside from "@/components/air/flightsAside";
 export default {
   data() {
     return {
       //机票列表数据, 渲染列表数据
       // flightsList: [],
       // 深拷贝一份总数据用来筛选
-      copyTotalData:{},
+      copyTotalData: {},
       //获取到的总数据
       totalData: {},
       //当前页
@@ -56,7 +58,8 @@ export default {
   components: {
     flightsListHead,
     flightsItem,
-    flightsFilters
+    flightsFilters,
+    flightsAside
   },
   computed: {
     flightsList() {
@@ -83,7 +86,7 @@ export default {
         //机票总数据
         this.totalData = res.data;
         //这里深拷贝一份数据用来筛选
-         this.copyTotalData={...this.totalData}
+        this.copyTotalData = { ...this.totalData };
         //机票列表
         // this.flightsList = this.totalData.flights;
       });
