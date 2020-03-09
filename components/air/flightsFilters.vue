@@ -110,6 +110,7 @@ export default {
       return newFliterData;
       // this.$emit("setFlightList", newFliterData);
     },
+    //多个过滤器同时触发
     handleFilters(){
       //原始数据
       let newFliterData=this.totalData.flights;
@@ -138,7 +139,13 @@ export default {
       this.$emit('setFlightList',newFliterData);
     },
     // 撤销条件时候触发
-    handleFiltersCancel() {}
+    handleFiltersCancel() {
+      this.airport="";
+      this.flightTimes= "";
+      this.company="";
+      this.airSize= "";
+      this.handleFilters();
+    }
   }
 };
 </script>
