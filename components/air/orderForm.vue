@@ -71,17 +71,18 @@ export default {
         {
           name: "",
           id: ""
-        },
-        {
-          name: "",
-          id: ""
-        },
+        }
       ]
     };
   },
   methods: {
     // 添加乘机人
-    handleAddUsers() {},
+    handleAddUsers() {
+      this.users.push({
+        name: "",
+        id: ""
+      });
+    },
 
     // 移除乘机人
     handleDeleteUser() {},
