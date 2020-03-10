@@ -31,8 +31,8 @@
     <div class="air-column">
       <h2>保险</h2>
       <div>
-        <div class="insurance-item">
-          <el-checkbox label="航空意外险：￥30/份×1  最高赔付260万" border></el-checkbox>
+        <div class="insurance-item" v-for="(item,index) of infoData.insurances" :key="index">
+          <el-checkbox :label="`${item.type}：￥${item.price}/份×1  最高赔付${item.compensation}`" border></el-checkbox>
         </div>
       </div>
     </div>
@@ -75,6 +75,7 @@ export default {
       ]
     };
   },
+  props:['infoData'],
   methods: {
     // 添加乘机人
     handleAddUsers() {
