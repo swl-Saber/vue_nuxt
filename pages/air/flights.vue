@@ -61,6 +61,12 @@ export default {
     flightsFilters,
     flightsAside
   },
+  //监听路由变化，点击历史查询，重新加载页面
+  watch: {
+    $route(){
+      this.getFlightsData();
+    }
+  },
   computed: {
     flightsList() {
       const start = this.pageSize * (this.currentPage - 1);
