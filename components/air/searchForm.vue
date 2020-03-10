@@ -221,6 +221,7 @@ export default {
           }
         });
       }
+      this.$store.commit('history/setHistory',this.form)
       this.$router.push({
         path: "/air/flights",
         query: this.form
