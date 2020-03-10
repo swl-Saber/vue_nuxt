@@ -1,11 +1,12 @@
 <template>
   <div class="main">
+    <!-- 乘机人 -->
     <div class="air-column">
       <h2>乘机人</h2>
       <el-form class="member-info">
-        <div class="member-info-item">
+        <div class="member-info-item" v-for="(user,index) of users" :key="index">
           <el-form-item label="乘机人类型">
-            <el-input placeholder="姓名" class="input-with-select">
+            <el-input placeholder="姓名" class="input-with-select" v-model="user.name">
               <el-select slot="prepend" value="1" placeholder="请选择">
                 <el-option label="成人" value="1"></el-option>
               </el-select>
@@ -13,7 +14,7 @@
           </el-form-item>
 
           <el-form-item label="证件类型">
-            <el-input placeholder="证件号码" class="input-with-select">
+            <el-input placeholder="证件号码" class="input-with-select" v-model="user.id">
               <el-select slot="prepend" value="1" placeholder="请选择">
                 <el-option label="身份证" value="1" :checked="true"></el-option>
               </el-select>
@@ -26,7 +27,7 @@
 
       <el-button class="add-member" type="primary" @click="handleAddUsers">添加乘机人</el-button>
     </div>
-
+    <!-- 保险 -->
     <div class="air-column">
       <h2>保险</h2>
       <div>
@@ -35,7 +36,7 @@
         </div>
       </div>
     </div>
-
+    <!-- 联系人 -->
     <div class="air-column">
       <h2>联系人</h2>
       <div class="contact">
@@ -64,6 +65,20 @@
 
 <script>
 export default {
+  data() {
+    return {
+      users: [
+        {
+          name: "",
+          id: ""
+        },
+        {
+          name: "",
+          id: ""
+        },
+      ]
+    };
+  },
   methods: {
     // 添加乘机人
     handleAddUsers() {},
