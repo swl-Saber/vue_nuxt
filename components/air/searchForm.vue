@@ -221,7 +221,15 @@ export default {
           }
         });
       }
-      this.$store.commit('history/setHistory',this.form)
+      //这里定义一个变量存this.form,防止用户多打了个市
+      const submitData={
+        departCity: this.form.departCity.replace(/市$/,''),
+        departCode: this.form.departCode, //城市代号
+        destCity:this.form.destCity.replace(/市$/,''),
+        destCode: this.form.destCode, //城市代号
+        departDate: this.form.departDate
+      }
+      this.$store.commit('history/setHistory',submitData)
       this.$router.push({
         path: "/air/flights",
         query: this.form
