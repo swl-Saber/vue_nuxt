@@ -72,7 +72,11 @@ export default {
           name: "",
           id: ""
         }
-      ]
+      ],
+      insurances:[],//保险id
+      contactName:'',
+      contactPhone:'',
+      invoice:false
     };
   },
   props:['infoData'],
