@@ -34,9 +34,9 @@
         <el-checkbox-group v-model="insurances">
           <div class="insurance-item" v-for="(item,index) of infoData.insurances" :key="index">
             <el-checkbox
-              :label="`${item.type}：￥${item.price}/份×1  最高赔付${item.compensation}`"
+              :label="item.id"
               border
-            ></el-checkbox>
+            >{{item.type}}：￥{{item.price}}/份×1  最高赔付{{item.compensation}}</el-checkbox>
           </div>
         </el-checkbox-group>
       </div>
@@ -58,7 +58,7 @@
           </el-form-item>
 
           <el-form-item label="验证码">
-            <el-input></el-input>
+            <el-input v-model="captcha"></el-input>
           </el-form-item>
         </el-form>
         <el-button type="warning" class="submit" @click="handleSubmit">提交订单</el-button>
@@ -81,6 +81,7 @@ export default {
       contactName: "",
       contactPhone: "",
       invoice: false,
+      captcha:''
     };
   },
   props: ["infoData"],
@@ -100,7 +101,7 @@ export default {
     // 发送手机验证码
     handleSendCaptcha() {
       if(this.contactPhone.length!=11){
-       return this.$message.error('手机号码格式错误')
+       return this.$message.error('请正确输入手机号码')
       }
       this.$axios({
         url: "/captchas",
@@ -109,8 +110,8 @@ export default {
           tel: this.contactPhone
         }
       }).then(res => {
-        console.log(res.data);
-        this.$message.success("手机验证码为", res.data.code);
+        console.log(res);
+        this.$message.success("手机验证码为"+res.data.code);
       });
     },
 
@@ -123,10 +124,20 @@ export default {
         contactPhone:this.contactPhone,
         invoice:this.invoice,
         seat_xid:this.$route.query.seat_xid,
-        air:this.$route.query.id
+        air:this.$route.query.id,
+        captcha:this.captcha
       }
-      console.log(data);
-      
+      this.$axios({
+        url:'/airorders',
+        method:'post',
+        data,
+        headers:{
+          Authorization:"Bearer "+this.$store.state.user.userInfo.token
+        }
+      }).then(res=>{
+        console.log(res.data);
+        
+      })
     }
   }
 };
