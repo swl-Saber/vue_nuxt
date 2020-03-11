@@ -31,9 +31,14 @@
     <div class="air-column">
       <h2>保险</h2>
       <div>
+        <el-checkbox-group v-model="insurances">
         <div class="insurance-item" v-for="(item,index) of infoData.insurances" :key="index">
-          <el-checkbox :label="`${item.type}：￥${item.price}/份×1  最高赔付${item.compensation}`" border></el-checkbox>
+          <el-checkbox
+            :label="`${item.type}：￥${item.price}/份×1  最高赔付${item.compensation}`"
+            border  
+          ></el-checkbox>
         </div>
+        </el-checkbox-group>
       </div>
     </div>
     <!-- 联系人 -->
@@ -73,13 +78,13 @@ export default {
           id: ""
         }
       ],
-      insurances:[],//保险id
-      contactName:'',
-      contactPhone:'',
-      invoice:false
+      insurances: [], //保险id
+      contactName: "",
+      contactPhone: "",
+      invoice: false
     };
   },
-  props:['infoData'],
+  props: ["infoData"],
   methods: {
     // 添加乘机人
     handleAddUsers() {
@@ -91,14 +96,15 @@ export default {
 
     // 移除乘机人
     handleDeleteUser(index) {
-        this.users.splice(index,1);
+      this.users.splice(index, 1);
     },
-
     // 发送手机验证码
     handleSendCaptcha() {},
 
     // 提交订单
-    handleSubmit() {}
+    handleSubmit() {
+      console.log(this.insurances);   
+    }
   }
 };
 </script>
