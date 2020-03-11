@@ -4,7 +4,7 @@
       <!-- 订单表单 -->
       <orderForm :infoData="infoData"></orderForm>
       <!-- 侧边栏 -->
-      <orderAside></orderAside>
+      <orderAside :data="infoData"></orderAside>
     </el-row>
   </div>
 </template>
