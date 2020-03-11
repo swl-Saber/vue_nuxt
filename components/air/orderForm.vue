@@ -36,7 +36,7 @@
             <el-checkbox
               :label="item.id"
               border
-            >{{item.type}}：￥{{item.price}}/份×1  最高赔付{{item.compensation}}</el-checkbox>
+            >{{item.type}}：￥{{item.price}}/份×1 最高赔付{{item.compensation}}</el-checkbox>
           </div>
         </el-checkbox-group>
       </div>
@@ -81,10 +81,20 @@ export default {
       contactName: "",
       contactPhone: "",
       invoice: false,
-      captcha:''
+      captcha: ""
     };
   },
   props: ["infoData"],
+  watch: {
+    users() {
+      console.log("监听users");
+      this.totalPrice();
+    },
+    insurances() {
+      console.log("监听保险");
+      this.totalPrice();
+    }
+  },
   methods: {
     // 添加乘机人
     handleAddUsers() {
@@ -100,8 +110,8 @@ export default {
     },
     // 发送手机验证码
     handleSendCaptcha() {
-      if(this.contactPhone.length!=11){
-       return this.$message.error('请正确输入手机号码')
+      if (this.contactPhone.length != 11) {
+        return this.$message.error("请正确输入手机号码");
       }
       this.$axios({
         url: "/captchas",
@@ -111,33 +121,48 @@ export default {
         }
       }).then(res => {
         console.log(res);
-        this.$message.success("手机验证码为"+res.data.code);
+        this.$message.success("手机验证码为" + res.data.code);
       });
     },
 
     // 提交订单
     handleSubmit() {
-      const data={
-        users:this.users,
-        insurances:this.insurances,
-        contactName:this.contactName,
-        contactPhone:this.contactPhone,
-        invoice:this.invoice,
-        seat_xid:this.$route.query.seat_xid,
-        air:this.$route.query.id,
-        captcha:this.captcha
-      }
+      const data = {
+        users: this.users,
+        insurances: this.insurances,
+        contactName: this.contactName,
+        contactPhone: this.contactPhone,
+        invoice: this.invoice,
+        seat_xid: this.$route.query.seat_xid,
+        air: this.$route.query.id,
+        captcha: this.captcha
+      };
       this.$axios({
-        url:'/airorders',
-        method:'post',
+        url: "/airorders",
+        method: "post",
         data,
-        headers:{
-          Authorization:"Bearer "+this.$store.state.user.userInfo.token
+        headers: {
+          Authorization: "Bearer " + this.$store.state.user.userInfo.token
         }
-      }).then(res=>{
+      }).then(res => {
         console.log(res.data);
-        
-      })
+      });
+    },
+    //计算机票总价格
+    totalPrice() {
+      //机票价格*乘机人数量+保险价格*乘机人数量
+      const ticketPrice = this.infoData.seat_infos.org_settle_price;
+      const usersNum = this.users.length;
+      let insurancesPrice = 0;
+      this.infoData.insurances.forEach(element => {
+        if (this.insurances.indexOf(element.id) > -1) {
+          insurancesPrice += element.price;
+        }
+      });
+      // console.log(insurancesPrice);
+      const res=ticketPrice*usersNum+insurancesPrice*usersNum;
+      console.log(res);
+      
     }
   }
 };

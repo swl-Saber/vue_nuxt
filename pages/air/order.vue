@@ -2,7 +2,7 @@
   <div class="container">
     <el-row type="flex" justify="space-between">
       <!-- 订单表单 -->
-      <orderForm :infoData="infoData"></orderForm>
+      <orderForm v-if="infoData.id" :infoData="infoData"></orderForm>
       <!-- 侧边栏 -->
       <orderAside v-if="infoData.id" :data="infoData"></orderAside>
     </el-row>
