@@ -6,7 +6,7 @@
       <el-form class="member-info">
         <div class="member-info-item" v-for="(user,index) of users" :key="index">
           <el-form-item label="乘机人类型">
-            <el-input placeholder="姓名" class="input-with-select" v-model="user.name">
+            <el-input placeholder="姓名" class="input-with-select" v-model="user.username">
               <el-select slot="prepend" value="1" placeholder="请选择">
                 <el-option label="成人" value="1"></el-option>
               </el-select>
@@ -45,11 +45,11 @@
     <div class="air-column">
       <h2>联系人</h2>
       <div class="contact">
-        <el-form label-width="60px" :rules="rules">
+        <el-form label-width="60px">
           <el-form-item label="姓名">
-            <el-input></el-input>
+            <el-input v-model="contactName"></el-input>
           </el-form-item>
-          <el-form-item label="手机" prop="contactPhone">
+          <el-form-item label="手机">
             <el-input placeholder="请输入内容" v-model="contactPhone">
               <template slot="append">
                 <el-button @click="handleSendCaptcha">发送验证码</el-button>
@@ -73,7 +73,7 @@ export default {
     return {
       users: [
         {
-          name: "",
+          username: "",
           id: ""
         }
       ],
@@ -81,11 +81,6 @@ export default {
       contactName: "",
       contactPhone: "",
       invoice: false,
-      rules: {
-        contactPhone: [
-          { required:true,message:'请输入手机号码', trigger: "blur" },
-        ]
-      }
     };
   },
   props: ["infoData"],
@@ -121,7 +116,17 @@ export default {
 
     // 提交订单
     handleSubmit() {
-      console.log(this.insurances);
+      const data={
+        users:this.users,
+        insurances:this.insurances,
+        contactName:this.contactName,
+        contactPhone:this.contactPhone,
+        invoice:this.invoice,
+        seat_xid:this.$route.query.seat_xid,
+        air:this.$route.query.id
+      }
+      console.log(data);
+      
     }
   }
 };
