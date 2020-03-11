@@ -64,6 +64,7 @@
         <el-button type="warning" class="submit" @click="handleSubmit">提交订单</el-button>
       </div>
     </div>
+    {{totalPrice}}    
   </div>
 </template>
 
@@ -85,18 +86,23 @@ export default {
     };
   },
   props: ["infoData"],
-  watch: {
-    users() {
-      console.log("监听users");
-      this.totalPrice();
-    },
-    insurances() {
-      console.log("监听保险");
-      this.totalPrice();
+  computed: {
+    //计算机票总价格
+    totalPrice() {
+      //机票价格*乘机人数量+保险价格*乘机人数量
+      const ticketPrice = this.infoData.seat_infos.org_settle_price;
+      const usersNum = this.users.length;
+      let insurancesPrice = 0;
+      this.infoData.insurances.forEach(element => {
+        if (this.insurances.indexOf(element.id) > -1) {
+          insurancesPrice += element.price;
+        }
+      });
+      // console.log(insurancesPrice);
+      const res=ticketPrice*usersNum+insurancesPrice*usersNum;
+      console.log(res);
+      this.$emit('ticketPrice',res)
     }
-  },
-  mounted() {
-    this.totalPrice();
   },
   methods: {
     // 添加乘机人
@@ -151,22 +157,7 @@ export default {
         console.log(res.data);
       });
     },
-    //计算机票总价格
-    totalPrice() {
-      //机票价格*乘机人数量+保险价格*乘机人数量
-      const ticketPrice = this.infoData.seat_infos.org_settle_price;
-      const usersNum = this.users.length;
-      let insurancesPrice = 0;
-      this.infoData.insurances.forEach(element => {
-        if (this.insurances.indexOf(element.id) > -1) {
-          insurancesPrice += element.price;
-        }
-      });
-      // console.log(insurancesPrice);
-      const res=ticketPrice*usersNum+insurancesPrice*usersNum;
-      console.log(res);
-      this.$emit('ticketPrice',res)
-    }
+    
   }
 };
 </script>
