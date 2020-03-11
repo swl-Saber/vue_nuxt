@@ -32,12 +32,12 @@
       <h2>保险</h2>
       <div>
         <el-checkbox-group v-model="insurances">
-        <div class="insurance-item" v-for="(item,index) of infoData.insurances" :key="index">
-          <el-checkbox
-            :label="`${item.type}：￥${item.price}/份×1  最高赔付${item.compensation}`"
-            border  
-          ></el-checkbox>
-        </div>
+          <div class="insurance-item" v-for="(item,index) of infoData.insurances" :key="index">
+            <el-checkbox
+              :label="`${item.type}：￥${item.price}/份×1  最高赔付${item.compensation}`"
+              border
+            ></el-checkbox>
+          </div>
         </el-checkbox-group>
       </div>
     </div>
@@ -51,7 +51,7 @@
           </el-form-item>
 
           <el-form-item label="手机">
-            <el-input placeholder="请输入内容">
+            <el-input placeholder="请输入内容" v-model="contactPhone">
               <template slot="append">
                 <el-button @click="handleSendCaptcha">发送验证码</el-button>
               </template>
@@ -99,11 +99,22 @@ export default {
       this.users.splice(index, 1);
     },
     // 发送手机验证码
-    handleSendCaptcha() {},
+    handleSendCaptcha() {
+      this.$axios({
+        url: "/captchas",
+        method: "post",
+        data: {
+          tel: this.contactPhone
+        }
+      }).then(res=>{
+        console.log(res.data);
+        this.$message.success('手机验证码为',res.data.code)        
+      });
+    },
 
     // 提交订单
     handleSubmit() {
-      console.log(this.insurances);   
+      console.log(this.insurances);
     }
   }
 };
