@@ -37,14 +37,14 @@
     </el-row>
     <el-row type="flex" justify="space-between" align="middle" class="info-bar">
       <span>应付总额：</span>
-      <span class="price">￥1111</span>
+      <span class="price">￥{{totalPrice}}</span>
     </el-row>
   </div>
 </template>
 
 <script>
 export default {
-  props: ["data"],
+  props: ["data","totalPrice"],
   computed: {
     time() {
       const arr = this.data.arr_time.split(":");

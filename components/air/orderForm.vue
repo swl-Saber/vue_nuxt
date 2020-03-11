@@ -95,6 +95,9 @@ export default {
       this.totalPrice();
     }
   },
+  mounted() {
+    this.totalPrice();
+  },
   methods: {
     // 添加乘机人
     handleAddUsers() {
@@ -162,7 +165,7 @@ export default {
       // console.log(insurancesPrice);
       const res=ticketPrice*usersNum+insurancesPrice*usersNum;
       console.log(res);
-      
+      this.$emit('ticketPrice',res)
     }
   }
 };
