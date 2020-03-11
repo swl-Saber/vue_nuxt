@@ -96,6 +96,12 @@ export default {
     handleChoose(id,seat_xid){
       console.log(id);
       console.log(seat_xid);
+      if(!this.$store.state.user.userInfo.token){
+        this.$message.success('请先登录，正在跳转...')
+        setTimeout(()=>{
+          this.$router.push('/user/login')
+        },1000)
+      }
       this.$router.push({
         // path:`/air/order?id=${id}&seat_id=${seat_xid}`
         path:'/air/order',
