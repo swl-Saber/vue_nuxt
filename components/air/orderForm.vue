@@ -45,12 +45,11 @@
     <div class="air-column">
       <h2>联系人</h2>
       <div class="contact">
-        <el-form label-width="60px">
+        <el-form label-width="60px" :rules="rules">
           <el-form-item label="姓名">
             <el-input></el-input>
           </el-form-item>
-
-          <el-form-item label="手机">
+          <el-form-item label="手机" prop="contactPhone">
             <el-input placeholder="请输入内容" v-model="contactPhone">
               <template slot="append">
                 <el-button @click="handleSendCaptcha">发送验证码</el-button>
@@ -81,7 +80,12 @@ export default {
       insurances: [], //保险id
       contactName: "",
       contactPhone: "",
-      invoice: false
+      invoice: false,
+      rules: {
+        contactPhone: [
+          { required:true,message:'请输入手机号码', trigger: "blur" },
+        ]
+      }
     };
   },
   props: ["infoData"],
@@ -100,15 +104,18 @@ export default {
     },
     // 发送手机验证码
     handleSendCaptcha() {
+      if(this.contactPhone.length!=11){
+       return this.$message.error('手机号码格式错误')
+      }
       this.$axios({
         url: "/captchas",
         method: "post",
         data: {
           tel: this.contactPhone
         }
-      }).then(res=>{
+      }).then(res => {
         console.log(res.data);
-        this.$message.success('手机验证码为',res.data.code)        
+        this.$message.success("手机验证码为", res.data.code);
       });
     },
 
