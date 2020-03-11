@@ -4,13 +4,14 @@
       <!-- 订单表单 -->
       <orderForm :infoData="infoData"></orderForm>
       <!-- 侧边栏 -->
-      <div class="aside"></div>
+      <orderAside></orderAside>
     </el-row>
   </div>
 </template>
 
 <script>
 import orderForm from "@/components/air/orderForm";
+import orderAside from "@/components/air/orderAside";
 export default {
   data() {
     return {
@@ -20,7 +21,8 @@ export default {
     }
   },
   components: {
-    orderForm
+    orderForm,
+    orderAside
   },
   mounted() {
     const {id,seat_xid}=this.$route.query
