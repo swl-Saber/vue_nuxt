@@ -52,7 +52,7 @@
           <el-form-item label="手机">
             <el-input placeholder="请输入内容" v-model="contactPhone">
               <template slot="append">
-                <el-button @click="handleSendCaptcha">发送验证码</el-button>
+                <el-button @click="handleSendCaptcha" :disabled="disabled">{{text}}</el-button>
               </template>
             </el-input>
           </el-form-item>
@@ -64,7 +64,7 @@
         <el-button type="warning" class="submit" @click="handleSubmit">提交订单</el-button>
       </div>
     </div>
-    {{totalPrice}}    
+    {{totalPrice}}
   </div>
 </template>
 
@@ -82,7 +82,9 @@ export default {
       contactName: "",
       contactPhone: "",
       invoice: false,
-      captcha: ""
+      captcha: "",
+      text: "发送验证码",
+      disabled: false
     };
   },
   props: ["infoData"],
@@ -99,9 +101,9 @@ export default {
         }
       });
       // console.log(insurancesPrice);
-      const res=ticketPrice*usersNum+insurancesPrice*usersNum;
+      const res = ticketPrice * usersNum + insurancesPrice * usersNum;
       console.log(res);
-      this.$emit('ticketPrice',res)
+      this.$emit("ticketPrice", res);
     }
   },
   methods: {
@@ -122,6 +124,21 @@ export default {
       if (this.contactPhone.length != 11) {
         return this.$message.error("请正确输入手机号码");
       }
+
+      //发送验证码设置一个60s倒计时
+      let count = 60;
+      let second = "s";
+      const timer = setInterval(() => {
+        this.disabled = true;
+        this.text = count + second;
+        count--;
+        if (count == 0) {
+          clearInterval(timer);
+          this.disabled = false;
+          this.text = "重新发送";
+        }
+      }, 1000);
+
       this.$axios({
         url: "/captchas",
         method: "post",
@@ -156,8 +173,7 @@ export default {
       }).then(res => {
         console.log(res.data);
       });
-    },
-    
+    }
   }
 };
 </script>
