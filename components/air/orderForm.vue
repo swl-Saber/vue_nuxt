@@ -3,9 +3,13 @@
     <!-- 乘机人 -->
     <div class="air-column">
       <h2>乘机人</h2>
-      <el-form class="member-info">
+      <el-form class="member-info" :model="{users}">
         <div class="member-info-item" v-for="(user,index) of users" :key="index">
-          <el-form-item label="乘机人类型">
+          <el-form-item
+            label="乘机人类型"
+            :prop="`users[${index}].username`"
+            :rules="{required:true,message:'请输入乘机人姓名',trigger:'blur'}"
+          >
             <el-input placeholder="姓名" class="input-with-select" v-model="user.username">
               <el-select slot="prepend" value="1" placeholder="请选择">
                 <el-option label="成人" value="1"></el-option>
@@ -13,7 +17,11 @@
             </el-input>
           </el-form-item>
 
-          <el-form-item label="证件类型">
+          <el-form-item
+            label="证件类型"
+            :prop="`users[${index}].id`"
+            :rules="[{required:true,message:'请输入身份证号码',trigger:'blur'},{ min: 18, max: 18, message: '身份证号码位数不正确', trigger: 'blur' }]"
+          >
             <el-input placeholder="证件号码" class="input-with-select" v-model="user.id">
               <el-select slot="prepend" value="1" placeholder="请选择">
                 <el-option label="身份证" value="1" :checked="true"></el-option>
@@ -75,11 +83,11 @@
 <script>
 export default {
   data() {
-    const validatePhone=(rule,value,callback)=>{
-      if(value.length!=11){
-        return callback(new Error('手机号码长度不正确'))
+    const validatePhone = (rule, value, callback) => {
+      if (value.length != 11) {
+        return callback(new Error("手机号码长度不正确"));
       }
-    }
+    };
     return {
       users: [
         {
@@ -229,7 +237,9 @@ export default {
   border-bottom: 1px #eee dashed;
   padding-bottom: 20px;
   position: relative;
-
+  /deep/ .el-form-item__error {
+    left: 130px;
+  }
   &:first-child {
     .delete-user {
       display: none;
