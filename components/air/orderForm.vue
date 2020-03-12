@@ -45,11 +45,15 @@
     <div class="air-column">
       <h2>联系人</h2>
       <div class="contact">
-        <el-form label-width="60px">
-          <el-form-item label="姓名">
+        <el-form
+          label-width="80px"
+          :model="{contactName,contactPhone,captcha}"
+          :rules="rulesContact"
+        >
+          <el-form-item label="姓名" prop="contactName">
             <el-input v-model="contactName"></el-input>
           </el-form-item>
-          <el-form-item label="手机">
+          <el-form-item label="手机" prop="contactPhone">
             <el-input placeholder="请输入内容" v-model="contactPhone">
               <template slot="append">
                 <el-button @click="handleSendCaptcha" :disabled="disabled">{{text}}</el-button>
@@ -57,7 +61,7 @@
             </el-input>
           </el-form-item>
 
-          <el-form-item label="验证码">
+          <el-form-item label="验证码" prop="captcha">
             <el-input v-model="captcha"></el-input>
           </el-form-item>
         </el-form>
@@ -71,6 +75,11 @@
 <script>
 export default {
   data() {
+    const validatePhone=(rule,value,callback)=>{
+      if(value.length!=11){
+        return callback(new Error('手机号码长度不正确'))
+      }
+    }
     return {
       users: [
         {
@@ -84,7 +93,17 @@ export default {
       invoice: false,
       captcha: "",
       text: "发送验证码",
-      disabled: false
+      disabled: false,
+      rulesContact: {
+        contactName: [
+          { required: true, message: "请输入联系人", trigger: "blur" }
+        ],
+        contactPhone: [
+          { required: true, message: "请输入手机号码", trigger: "blur" },
+          { validator: validatePhone, trigger: "blur" }
+        ],
+        captcha: [{ required: true, message: "请输入验证码", trigger: "blur" }]
+      }
     };
   },
   props: ["infoData"],
