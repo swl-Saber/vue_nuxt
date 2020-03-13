@@ -10,7 +10,7 @@
         <el-row type="flex" justify="space-between" align="middle" class="pay-qrcode">
           <div class="qrcode">
             <!-- 二维码 -->
-            <canvas id="qrcode-stage"></canvas>
+            <canvas ref="canvas"></canvas>
             <p>请使用微信扫一扫</p>
             <p>扫描二维码支付</p>
           </div>
@@ -25,6 +25,7 @@
 
 
 <script>
+import QRCode from 'qrcode'
 export default {
   data() {
     return {
@@ -53,6 +54,8 @@ export default {
       }).then(res => {
         console.log(res.data);
         this.payInfo = res.data;
+        //第一个参数是canvas dom，第二个参数是二维码的字符串，第三个参数是配置选项
+        QRCode.toCanvas(this.$refs.canvas,res.data.payInfo.code_url,{width:200})
       });
     }
   }
