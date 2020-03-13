@@ -6,7 +6,7 @@
     <el-form-item class="form-item" prop="captcha">
       <el-input placeholder="验证码" v-model="form.captcha">
         <template slot="append">
-          <el-button @click="handleSendCaptcha">发送验证码</el-button>
+          <el-button @click="handleSendCaptcha" :disabled="disabled">{{text}}</el-button>
         </template>
       </el-input>
     </el-form-item>
@@ -37,6 +37,8 @@ export default {
     };
     return {
       closeAlert:false,
+      text: "发送验证码",
+      disabled: false,
       form: {
         username: "",
         password: "",
@@ -75,6 +77,19 @@ export default {
         });
         return;
       }
+      //发送验证码设置一个60s倒计时
+      let count = 60;
+      let second = "s";
+      const timer = setInterval(() => {
+        this.disabled = true;
+        this.text = count + second;
+        count--;
+        if (count == 0) {
+          clearInterval(timer);
+          this.disabled = false;
+          this.text = "重新发送";
+        }
+      }, 1000);
       this.$axios({
         url: "/captchas",
         method: "post",
