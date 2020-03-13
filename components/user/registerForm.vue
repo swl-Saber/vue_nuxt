@@ -36,6 +36,7 @@ export default {
       }
     };
     return {
+      closeAlert:false,
       form: {
         username: "",
         password: "",
@@ -106,18 +107,25 @@ export default {
         // }
       }).then(res => {
         console.log(res.data);
-        if (res.data.token) {
-          //1.自动登录
-          this.$store.commit("user/setUserInfo", res.data);
-          //2.弹窗提示
-          this.$message({
-            type: "success",
-            message: "注册成功,正在跳转页面..."
-          });
-          //3.延迟跳转页面
-          setTimeout(() => {
-            this.$router.push("/");
-          }, 1000);
+        if (this.$route.path == "/user/login") {
+          if (res.data.token) {
+            //1.自动登录
+            this.$store.commit("user/setUserInfo", res.data);
+            //2.弹窗提示
+            this.$message({
+              type: "success",
+              message: "注册成功,正在跳转页面..."
+            });
+            //3.延迟跳转页面
+            setTimeout(() => {
+              this.$router.push("/");
+            }, 1000);
+          }
+        } else {
+          if (res.data.token) {
+            this.$store.commit("user/setUserInfo", res.data);
+            this.$emit('closeAlert',this.closeAlert)
+          }
         }
       });
     }

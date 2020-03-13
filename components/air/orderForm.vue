@@ -77,7 +77,7 @@
       </div>
     </div>
     <!-- 登录注册表单 -->
-    <el-dialog :visible.sync="dialogVisible" width="48%">
+    <el-dialog :visible.sync="dialogVisible" width="28%">
       <div class="container">
         <el-row type="flex" justify="center" align="middle" class="main">
           <div class="form-wrapper">
@@ -90,8 +90,8 @@
                 @click="changeTab(index)"
               >{{item}}</span>
             </el-row>
-            <loginForm v-if="this.currentTab==0"></loginForm>
-            <registerForm v-else-if="this.currentTab==1"></registerForm>
+            <loginForm v-if="this.currentTab==0" @closeAlert="closeAlert"></loginForm>
+            <registerForm v-else-if="this.currentTab==1" @closeAlert="closeAlert"></registerForm>
           </div>
         </el-row>
       </div>
@@ -236,6 +236,10 @@ export default {
     //登录注册切换
     changeTab(index) {
       this.currentTab = index;
+    },
+    // 关闭登录弹窗
+    closeAlert(value){
+      this.dialogVisible=value;
     }
   }
 };

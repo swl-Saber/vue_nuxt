@@ -22,6 +22,7 @@ export default {
         username: "",
         password: ""
       },
+      closeAlert:false,
       //表单规则
       rules: {
         username: [
@@ -57,6 +58,8 @@ export default {
                   this.$router.push("/");
                 }, 1000);
               }
+            }else{
+              this.$emit('closeAlert',this.closeAlert) 
             }
           });
           /* try {
