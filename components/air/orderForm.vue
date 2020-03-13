@@ -203,7 +203,7 @@ export default {
         }
       }).then(res => {
         console.log(res);
-        this.$message.success("手机验证码为" + res.data.code);
+        this.$message.success("手机验证码为：" + res.data.code);
       });
     },
 
@@ -231,15 +231,21 @@ export default {
         }
       }).then(res => {
         console.log(res.data);
+        const { data } = res.data;
+        this.$message.success("提交成功");
+        this.$router.push({
+          path: "/air/pay",
+          query: { id: data.id }
+        });
       });
     },
     //登录注册切换
     changeTab(index) {
       this.currentTab = index;
     },
-    // 关闭登录弹窗
-    closeAlert(value){
-      this.dialogVisible=value;
+    // 关闭登录注册弹窗
+    closeAlert(value) {
+      this.dialogVisible = value;
     }
   }
 };
