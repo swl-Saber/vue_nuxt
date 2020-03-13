@@ -76,11 +76,33 @@
         <el-button type="warning" class="submit" @click="handleSubmit">提交订单</el-button>
       </div>
     </div>
+    <!-- 登录注册表单 -->
+    <el-dialog :visible.sync="dialogVisible" width="48%">
+      <div class="container">
+        <el-row type="flex" justify="center" align="middle" class="main">
+          <div class="form-wrapper">
+            <!-- 表单头部tab -->
+            <el-row type="flex" justify="center" class="tabs">
+              <span
+                :class="{active:currentTab===index}"
+                v-for="(item,index) of loginList"
+                :key="index"
+                @click="changeTab(index)"
+              >{{item}}</span>
+            </el-row>
+            <loginForm v-if="this.currentTab==0"></loginForm>
+            <registerForm v-else-if="this.currentTab==1"></registerForm>
+          </div>
+        </el-row>
+      </div>
+    </el-dialog>
     {{totalPrice}}
   </div>
 </template>
 
 <script>
+import loginForm from "@/components/user/loginForm.vue";
+import registerForm from "@/components/user/registerForm.vue";
 export default {
   data() {
     const validatePhone = (rule, value, callback) => {
@@ -102,6 +124,9 @@ export default {
       captcha: "",
       text: "发送验证码",
       disabled: false,
+      currentTab: 0,
+      loginList: ["登录", "注册"],
+      dialogVisible: false,
       rulesContact: {
         contactName: [
           { required: true, message: "请输入联系人", trigger: "blur" }
@@ -115,6 +140,10 @@ export default {
     };
   },
   props: ["infoData"],
+  components: {
+    loginForm,
+    registerForm
+  },
   computed: {
     //计算机票总价格
     totalPrice() {
@@ -180,6 +209,9 @@ export default {
 
     // 提交订单
     handleSubmit() {
+      if (!this.$store.state.user.userInfo.token) {
+        this.dialogVisible = true;
+      }
       const data = {
         users: this.users,
         insurances: this.insurances,
@@ -200,6 +232,10 @@ export default {
       }).then(res => {
         console.log(res.data);
       });
+    },
+    //登录注册切换
+    changeTab(index) {
+      this.currentTab = index;
     }
   }
 };
@@ -288,5 +324,46 @@ export default {
   display: block;
   width: 250px;
   height: 50px;
+}
+.form-wrapper {
+  width: 400px;
+  margin: 0 auto;
+  background: #fff;
+  box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+
+  .tabs {
+    span {
+      display: block;
+      width: 50%;
+      height: 50px;
+      box-sizing: border-box;
+      border-top: 2px #eee solid;
+      background: #eee;
+      line-height: 48px;
+      text-align: center;
+      cursor: pointer;
+      color: #666;
+
+      &.active {
+        color: orange;
+        border-top-color: orange;
+        background: #fff;
+        font-weight: bold;
+      }
+    }
+  }
+}
+/deep/.el-dialog__header {
+  padding: 0;
+  .el-dialog__headerbtn {
+    top: 10px;
+    right: 12px;
+  }
+}
+/deep/.el-dialog__body {
+  padding: 0;
+  padding-top: 30px;
+  // width:fit-content;
 }
 </style>

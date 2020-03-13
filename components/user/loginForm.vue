@@ -47,14 +47,16 @@ export default {
       this.$refs.form.validate(isValue => {
         if (isValue) {
           this.$store.dispatch("user/login", this.form).then(res => {
-            if (res.data.token) {
-              this.$message({
-                type: "success",
-                message: "登录成功,正在跳转..."
-              });
-              setTimeout(() => {
-                this.$router.push("/");
-              }, 1000);
+            if (this.$route.path == "/user/login") {
+              if (res.data.token) {
+                this.$message({
+                  type: "success",
+                  message: "登录成功,正在跳转..."
+                });
+                setTimeout(() => {
+                  this.$router.push("/");
+                }, 1000);
+              }
             }
           });
           /* try {
