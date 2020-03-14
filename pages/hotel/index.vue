@@ -1,10 +1,22 @@
 <template>
-  <div>酒店页面</div>
+  <div class="container">
+    <breadcrumb></breadcrumb>
+    酒店页面
+    </div>
 </template>
 
 <script>
-export default {};
+import breadcrumb from '@/components/hotel/breadcrumb'
+export default {
+  components:{
+    breadcrumb
+  }
+};
 </script>
 
-<style>
+<style lang="less" scoped>
+.container{
+  width: 1000px;
+  margin: 0 auto;
+}
 </style>
