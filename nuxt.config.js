@@ -54,7 +54,11 @@ export default {
       //强调不能在服务器使用
       ssr: false
     },
-    '@/plugins/axios.js'
+    '@/plugins/axios.js',
+    {
+      src: "@/plugins/vue2editor.js",
+      ssr: false
+    }
   ],
   /*
    ** Nuxt.js dev-modules
