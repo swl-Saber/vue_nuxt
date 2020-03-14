@@ -33,7 +33,8 @@ import QRCode from "qrcode";
 export default {
   data() {
     return {
-      payInfo: {}
+      payInfo: {},
+      timer:null
     };
   },
   watch: {
@@ -47,6 +48,10 @@ export default {
     if (this.$store.state.user.userInfo.token) {
       this.loadPage();
     }
+  },
+  destroyed() {
+      console.log('支付页面跳转到其他页面');
+      clearTimeout(this.timer);
   },
   methods: {
     loadPage() {
@@ -81,13 +86,10 @@ export default {
       }).then(res => {
         console.log(res.data);
         if (res.data.trade_state == "NOTPAY") {
-          setTimeout(() => {
+          this.timer=setTimeout(() => {
             this.checkPay();
           }, 3000);
         } else {
-          this.$message({
-            message: res.data.statusTxt
-          });
           this.parsePayResult(res.data.statusTxt);
         }
       });
@@ -95,24 +97,24 @@ export default {
     parsePayResult(result) {
       switch (result) {
         case "SUCCESS":
-          console.log("支付成功");
+        this.$message.success('支付成功')
           break;
         case "REFUND":
-          console.log("转入退款");
+          this.$message("转入退款");
         case "NOTPAY":
-          console.log("未支付");
+          this.$message.warning('未支付')
           break;
         case "CLOSED":
-          console.log("已关闭");
+          this.$message("已关闭");
           break;
         case "REVOKED":
-          console.log("已撤销（付款码支付）");
+          this.$message("已撤销（付款码支付）");
           break;
         case "USERPAYING":
-          console.log("用户支付中（付款码支付）");
+          this.$message.success("用户支付中（付款码支付）");
           break;
         case "PAYERROR":
-          console.log("支付失败");
+          this.$message.error("支付失败");
           break;
         default:
           break;
