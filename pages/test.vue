@@ -1,22 +1,41 @@
 <template>
   <div>
-    <div class="tabs">
-      <span @click="currentTab=0">运动</span>
-      <span @click="currentTab=1">电影</span>
-      <span @click="currentTab=2">汽车</span>
-    </div>
-    <div v-if="currentTab==0">这里是运动的内容</div>
-    <div v-else-if="currentTab==1">这里是电影的内容</div>
-    <div v-else-if="currentTab==2">这里是汽车的内容</div>
+    <comment :comment="item" v-for="(item,index) of commentList" :key="index"></comment>
   </div>
 </template>
 
 <script>
+import comment from "@/components/test/comment";
 export default {
   data() {
     return {
-      currentTab: 0
+      commentList: [
+        {
+          content: "666"
+        },
+        {
+          content: "555",
+          parent: {
+            content: "5555555"
+          }
+        },
+        {
+          content: "444"
+        },
+        {
+          content: "3",
+          parent: {
+            content: "2",
+            parent: {
+              content: "1"
+            }
+          }
+        }
+      ]
     };
+  },
+  components: {
+    comment
   }
 };
 </script>
