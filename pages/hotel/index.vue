@@ -93,7 +93,7 @@
         </el-row>
       </el-col>
       <!-- 地图 -->
-      <el-col style="width:422px;height:261px">地图</el-col>
+      <el-col style="width:422px;height:261px" id="gaodeMap"></el-col>
     </el-row>
   </div>
 </template>
@@ -143,6 +143,34 @@ export default {
     breadcrumb,
     searchForm
   },
+  mounted() {
+    window.onLoad = function() {
+      // 创建高德地图实例
+      var map = new AMap.Map("gaodeMap", {
+        zoom: 12, //级别
+        center: [113.3245904, 23.1066805], //中心点坐标
+        viewMode: "3D" //使用3D视图
+      });
+
+      //创建点标记
+      var marker = new AMap.Marker({
+        position: new AMap.LngLat(113.3245904, 23.1066805), // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+        // 偏移量
+        // offset: new AMap.Pixel(-1, -1),
+        title: "广州塔"
+      });
+      // 将创建的点标记添加到已有的地图实例：
+      map.add(marker);
+      // 移除已创建的 marker
+      // map.remove(marker);
+    };
+    var url =
+      "https://webapi.amap.com/maps?v=1.4.15&key=bf7e6268bef485ff537e965c0fc9fe9b&callback=onLoad";
+    var jsapi = document.createElement("script");
+    jsapi.charset = "utf-8";
+    jsapi.src = url;
+    document.head.appendChild(jsapi);
+  },
   methods: {
     showContent() {
       this.isShow = !this.isShow;
@@ -169,6 +197,7 @@ export default {
 .wrapper {
   color: #666;
   font-size: 14px;
+  margin-bottom: 22px;
   .location {
     span {
       margin-right: 14px;
