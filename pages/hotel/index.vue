@@ -13,7 +13,12 @@
             <i>区域：</i>
           </el-col>
           <el-col>
-            <el-row type="flex" style="flex-wrap: wrap;width:520px" :class="{hiddenArea:areaShow}">
+            <el-row
+              type="flex"
+              style="flex-wrap: wrap;width:520px"
+              :class="{hiddenArea:areaShow}"
+              v-if="local&&local.length>0"
+            >
               <span v-for="(item,index) of local" :key="index">
                 <a href="#">{{item.name}}</a>
               </span>
@@ -171,6 +176,7 @@ export default {
     },
     //父组件接收城市的区域数据
     location(list, cityName) {
+      // console.log(list);
       //城市区域列表
       this.local = list;
       //城市名称

@@ -158,7 +158,7 @@ export default {
     queryCitySearch(searchValue, showList) {
       // searchValue = this.changeCity;
       this.getCityList(searchValue).then(cityList => {
-        console.log(cityList);
+        // console.log(cityList);
         showList(cityList);
       });
     },
