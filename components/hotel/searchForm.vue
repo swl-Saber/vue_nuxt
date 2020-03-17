@@ -1,10 +1,10 @@
 <template>
   <div class="input_wrapper">
-    <el-form :inline="true">
+    <el-form :inline="true" :model="form">
       <!-- 切换城市 -->
       <el-form-item>
         <el-autocomplete
-          v-model="changeCity"
+          v-model="form.changeCity"
           :fetch-suggestions="queryCitySearch"
           placeholder="切换城市"
           @select="handleSelect"
@@ -14,7 +14,7 @@
       <!-- 选择日期 -->
       <el-form-item>
         <el-date-picker
-          v-model="date"
+          v-model="form.date"
           type="daterange"
           range-separator="-"
           start-placeholder="入住日期"
@@ -29,7 +29,7 @@
             <el-row class="select_person" type="flex" justify="space-around">
               <el-col>每间</el-col>
               <el-col>
-                <el-select v-model="adult" size="mini" @change="handleAdult">
+                <el-select v-model="form.adult" size="mini" @change="handleAdult">
                   <el-option
                     v-for="(item,index) in adultOptions"
                     :key="index"
@@ -39,7 +39,7 @@
                 </el-select>
               </el-col>
               <el-col>
-                <el-select v-model="child" size="mini" @change="handleChild">
+                <el-select v-model="form.child" size="mini" @change="handleChild">
                   <el-option
                     v-for="(item,index) in childOptions"
                     :key="index"
@@ -66,10 +66,12 @@
 export default {
   data() {
     return {
-      changeCity: "",
-      date: "",
-      child: "0 儿童",
-      adult: "2 成人",
+      form: {
+        changeCity: "",
+        date: "",
+        child: "0 儿童",
+        adult: "2 成人"
+      },
       isShow: false,
       adultOptions: [
         {
@@ -125,11 +127,47 @@ export default {
       ]
     };
   },
+  mounted() {
+    //进页面时调用一次搜索函数，获取广州市区域数据
+    // this.queryCitySearch();
+  },
   methods: {
+    //获取城市列表
+    getCityList(searchValue) {
+      if (!searchValue) {
+        return;
+      }
+      return this.$axios({
+        url: "/cities",
+        params: {
+          name: searchValue
+        }
+      }).then(res => {
+        // console.log(res.data);
+        const { data } = res.data;
+
+        //在城市列表添加一个value属性
+        let cityList = data.map(city => {
+          return { ...city, value: city.name };
+        });
+        // console.log(cityList);
+        return cityList;
+      });
+    },
     //切换城市输入框获得焦点时触发
-    queryCitySearch(searchValue, showList) {},
+    queryCitySearch(searchValue, showList) {
+      // searchValue = this.changeCity;
+      this.getCityList(searchValue).then(cityList => {
+        console.log(cityList);
+        showList(cityList);
+      });
+    },
     //切换城市时下拉选择时触发
-    handleSelect(item) {},
+    handleSelect(item) {
+      // console.log(item);
+      //传城市列表区域的数据给父组件渲染
+      this.$emit("location", item.scenics, item.name);
+    },
     //查询价格触发
     handleSubmit() {},
     //选择成人人数时触发

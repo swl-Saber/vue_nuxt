@@ -1,7 +1,10 @@
 <template>
   <div class="container">
-    <breadcrumb></breadcrumb>
-    <searchForm></searchForm>
+    <!-- 面包屑 -->
+    <breadcrumb :cityName="cityName"></breadcrumb>
+    <!-- 查询价格 -->
+    <searchForm @location="location"></searchForm>
+    <!-- 区域、均价、地图 -->
     <el-row type="flex" class="wrapper">
       <el-col :span="14">
         <!-- 区域 -->
@@ -10,19 +13,14 @@
             <i>区域：</i>
           </el-col>
           <el-col>
-            <el-row type="flex" style="flex-wrap: wrap;width:520px">
+            <el-row type="flex" style="flex-wrap: wrap;width:520px" :class="{hiddenArea:areaShow}">
               <span v-for="(item,index) of local" :key="index">
-                <a href="#">{{item}}</a>
-              </span>
-            </el-row>
-            <el-row type="flex" style="flex-wrap: wrap;width:520px" v-if="isShow">
-              <span v-for="(item,index) of area" :key="index">
-                <a href="#">{{item}}</a>
+                <a href="#">{{item.name}}</a>
               </span>
             </el-row>
             <el-row>
               <i class="el-icon-d-arrow-left" @click="showContent" :class="{active:isShow}"></i>
-              <span>等29个区域</span>
+              <span>等{{local.length}}个区域</span>
             </el-row>
           </el-col>
         </el-row>
@@ -95,33 +93,25 @@
       <!-- 地图 -->
       <el-col style="width:422px;height:261px" id="gaodeMap"></el-col>
     </el-row>
+    <!-- 分类筛选 -->
+    <filters></filters>
+    <!-- 酒店列表 -->
+    <hotelList></hotelList>
   </div>
 </template>
 
 <script>
 import breadcrumb from "@/components/hotel/breadcrumb";
 import searchForm from "@/components/hotel/searchForm";
+import filters from "@/components/hotel/filters";
+import hotelList from "@/components/hotel/hotelList";
 export default {
   data() {
     return {
       isShow: false,
-      local: [
-        "人民广场",
-        "城桥镇",
-        "奉贤区",
-        "金山区",
-        "建设镇",
-        "三星镇",
-        "新河镇",
-        "通河/泗塘堡镇",
-        "绿华镇",
-        "南门",
-        "向化镇",
-        "陈家镇",
-        "横沙乡",
-        "博乐广场",
-        "亭林"
-      ],
+      areaShow: true,
+      local: {},
+      cityName: "",
       area: [
         "珠江新城",
         "陈家祠",
@@ -141,7 +131,9 @@ export default {
   },
   components: {
     breadcrumb,
-    searchForm
+    searchForm,
+    filters,
+    hotelList
   },
   mounted() {
     window.onLoad = function() {
@@ -172,8 +164,17 @@ export default {
     document.head.appendChild(jsapi);
   },
   methods: {
+    //区域数据显示隐藏
     showContent() {
       this.isShow = !this.isShow;
+      this.areaShow = !this.areaShow;
+    },
+    //父组件接收城市的区域数据
+    location(list, cityName) {
+      //城市区域列表
+      this.local = list;
+      //城市名称
+      this.cityName = cityName;
     }
   }
 };
@@ -184,16 +185,24 @@ export default {
   width: 1000px;
   margin: 0 auto;
 }
+//下拉
 .el-icon-d-arrow-left {
   transform: rotate(-90deg);
   color: #ff9900;
   cursor: pointer;
 }
+//上收
 .active {
   transform: rotate(90deg);
   color: #ff9900;
   cursor: pointer;
 }
+//隐藏
+.hiddenArea {
+  overflow: hidden;
+  height: 38px;
+}
+// 区域、均价、地图
 .wrapper {
   color: #666;
   font-size: 14px;
@@ -202,9 +211,14 @@ export default {
     span {
       margin-right: 14px;
       flex-wrap: wrap;
+      a:hover {
+        text-decoration: underline;
+        color: #0099ff;
+      }
     }
   }
 }
+//均价
 .price-wrapper {
   position: relative;
   margin-top: 25px;
