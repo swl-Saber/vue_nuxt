@@ -76,9 +76,10 @@ export default {
    ** See https://axios.nuxtjs.org/options
    */
   axios: {
-    baseURL: "http://157.122.54.189:9095" // 新增备用地址
+    // baseURL: "http://157.122.54.189:9095" // 新增备用地址
     // baseURL:"http://localhost:1337"
-    // baseURL:"http: //120.24.171.137:1337"
+    // baseURL: "http: //120.24.171.137:1337"
+    baseURL: "http://liangwei.tech:1337/"
   },
   /*
    ** Build configuration

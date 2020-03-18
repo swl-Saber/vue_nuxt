@@ -143,7 +143,7 @@ export default {
           name: searchValue
         }
       }).then(res => {
-        // console.log(res.data);
+        console.log(res.data);
         const { data } = res.data;
 
         //在城市列表添加一个value属性

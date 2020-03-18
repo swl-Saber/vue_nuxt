@@ -101,7 +101,25 @@
     <!-- 分类筛选 -->
     <filters></filters>
     <!-- 酒店列表 -->
-    <hotelList></hotelList>
+    <div>
+      <!-- 酒店列表组件 -->
+      <div v-if="hotelList.length">
+        <hotelitem v-for="(item,index) of hotelList" :key="index" :hotel="item"></hotelitem>
+      </div>
+      <div v-else>暂无数据</div>
+      <!-- 分页器 -->
+      <div class="pagination">
+        <el-pagination
+          v-if="hotelData.data&&hotelData.data.length>0"
+          layout="total,sizes,prev, pager, next,jumper"
+          :total="hotelData.data.length"
+          :page-size="pageSize"
+          :page-sizes="[2,5,10]"
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+        ></el-pagination>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -109,7 +127,7 @@
 import breadcrumb from "@/components/hotel/breadcrumb";
 import searchForm from "@/components/hotel/searchForm";
 import filters from "@/components/hotel/filters";
-import hotelList from "@/components/hotel/hotelList";
+import hotelitem from "@/components/hotel/hotelitem";
 export default {
   data() {
     return {
@@ -117,6 +135,13 @@ export default {
       areaShow: true,
       local: {},
       cityName: "",
+      // 获取到的所有数据
+      hotelData: {},
+      // 酒店列表数据
+      // 将hotelList变成一个计算属性
+      // hotelList: [],
+      pageIndex: 1,
+      pageSize: 5,
       area: [
         "珠江新城",
         "陈家祠",
@@ -138,9 +163,10 @@ export default {
     breadcrumb,
     searchForm,
     filters,
-    hotelList
+    hotelitem
   },
   mounted() {
+    this.getData();
     window.onLoad = function() {
       // 创建高德地图实例
       var map = new AMap.Map("gaodeMap", {
@@ -168,6 +194,19 @@ export default {
     jsapi.src = url;
     document.head.appendChild(jsapi);
   },
+  computed: {
+    // 酒店列表数据
+    hotelList() {
+      const start = (this.pageIndex - 1) * this.pageSize;
+      const end = start + this.pageSize;
+      if (this.hotelData.data) {
+        return this.hotelData.data.slice(start, end);
+      } else {
+        // 预防异步数据没有获取完毕
+        return [];
+      }
+    }
+  },
   methods: {
     //区域数据显示隐藏
     showContent() {
@@ -181,6 +220,22 @@ export default {
       this.local = list;
       //城市名称
       this.cityName = cityName;
+    },
+    getData() {
+      this.$axios({
+        url: "/hotels",
+        params: this.$route.query
+      }).then(res => {
+        this.hotelData = res.data;
+        this.total = this.hotelData.total;
+        console.log(this.hotelData);
+      });
+    },
+    handleCurrentChange(current) {
+      this.pageIndex = current;
+    },
+    handleSizeChange(size) {
+      this.pageSize = size;
     }
   }
 };
@@ -237,5 +292,15 @@ export default {
   .iconhuangguan {
     color: #ff9900;
   }
+}
+
+.hotel_index {
+  width: 1000px;
+  margin: 20px auto;
+}
+.pagination {
+  padding: 20px;
+  display: flex;
+  justify-content: flex-end;
 }
 </style>
